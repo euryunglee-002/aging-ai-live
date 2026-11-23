@@ -1,0 +1,231 @@
+{
+ "updated_utc": "2026-09-22T11:20:00+00:00",
+ "error": null,
+ "source": "ISO New England, NEMA (4008)",
+ "input_hour_utc": "2026-09-22T11:00:00+00:00",
+ "input_hour_boston": "2026-09-22T07:00:00-04:00",
+ "forecast_hour_boston": "2026-09-22T08:00:00-04:00",
+ "age_hours": 0.33,
+ "observed_mw": 2496.2,
+ "forecast_mw": 2445.6,
+ "alive": 25,
+ "dead": [],
+ "neurons": [
+  {
+   "id": 0,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 1,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 2,
+   "activation": 1.1737,
+   "contribution": 0.3825,
+   "share": 0.21082,
+   "pulse_ms": 316
+  },
+  {
+   "id": 3,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 4,
+   "activation": 0.5608,
+   "contribution": 0.1374,
+   "share": 0.07571,
+   "pulse_ms": 114
+  },
+  {
+   "id": 5,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 6,
+   "activation": 0.7888,
+   "contribution": 0.2309,
+   "share": 0.12725,
+   "pulse_ms": 191
+  },
+  {
+   "id": 7,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 8,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 9,
+   "activation": 0.6791,
+   "contribution": 0.1626,
+   "share": 0.0896,
+   "pulse_ms": 134
+  },
+  {
+   "id": 10,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 11,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 12,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 13,
+   "activation": 1.0847,
+   "contribution": 0.1608,
+   "share": 0.08864,
+   "pulse_ms": 133
+  },
+  {
+   "id": 14,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 15,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 16,
+   "activation": 0.0965,
+   "contribution": 0.0189,
+   "share": 0.01043,
+   "pulse_ms": 16
+  },
+  {
+   "id": 17,
+   "activation": 1.5532,
+   "contribution": 0.2888,
+   "share": 0.15916,
+   "pulse_ms": 239
+  },
+  {
+   "id": 18,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 19,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 20,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 21,
+   "activation": 0.2278,
+   "contribution": 0.0518,
+   "share": 0.02853,
+   "pulse_ms": 43
+  },
+  {
+   "id": 22,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 23,
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
+  },
+  {
+   "id": 24,
+   "activation": 1.5891,
+   "contribution": 0.3808,
+   "share": 0.20987,
+   "pulse_ms": 315
+  }
+ ],
+ "sent": {
+  "status": "not sent"
+ },
+ "history": [
+  {
+   "t": "2026-09-22T11:00:00+00:00",
+   "observed": 2496.2,
+   "forecast": 2445.6,
+   "alive": 25
+  }
+ ],
+ "copper_ms": [
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "mode": "mirror",
+ "server_utc": "2026-09-22T11:20:00+00:00",
+ "has_forecast": true
+}
