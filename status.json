@@ -1,22 +1,22 @@
 {
- "updated_utc": "2026-11-24T06:23:46.244057+00:00",
+ "updated_utc": "2026-11-24T07:29:45.759704+00:00",
  "error": null,
  "source": "ISO-NE",
- "input_hour_utc": "2026-11-24T05:00:00+00:00",
- "input_hour_boston": "2026-11-24T00:00:00-05:00",
- "forecast_hour_boston": "2026-11-24T01:00:00-05:00",
- "age_hours": 1.4,
- "observed_mw": 2160.7,
- "forecast_mw": 2568.6,
+ "input_hour_utc": "2026-11-24T06:00:00+00:00",
+ "input_hour_boston": "2026-11-24T01:00:00-05:00",
+ "forecast_hour_boston": "2026-11-24T02:00:00-05:00",
+ "age_hours": 1.5,
+ "observed_mw": 2095.0,
+ "forecast_mw": 2574.2,
  "alive": 25,
  "dead": [],
  "neurons": [
   {
    "id": 0,
-   "activation": 4.049,
-   "contribution": 2.8155,
-   "share": 0.2952,
-   "pulse_ms": 443
+   "activation": 4.1414,
+   "contribution": 2.8797,
+   "share": 0.2985,
+   "pulse_ms": 448
   },
   {
    "id": 1,
@@ -27,10 +27,10 @@
   },
   {
    "id": 2,
-   "activation": 5.3122,
-   "contribution": 1.7312,
-   "share": 0.1815,
-   "pulse_ms": 272
+   "activation": 5.2349,
+   "contribution": 1.706,
+   "share": 0.1768,
+   "pulse_ms": 265
   },
   {
    "id": 3,
@@ -41,8 +41,8 @@
   },
   {
    "id": 4,
-   "activation": 1.5704,
-   "contribution": 0.3846,
+   "activation": 1.5887,
+   "contribution": 0.3891,
    "share": 0.0403,
    "pulse_ms": 60
   },
@@ -55,10 +55,10 @@
   },
   {
    "id": 6,
-   "activation": 2.0575,
-   "contribution": 0.6021,
-   "share": 0.0631,
-   "pulse_ms": 95
+   "activation": 2.0127,
+   "contribution": 0.589,
+   "share": 0.0611,
+   "pulse_ms": 92
   },
   {
    "id": 7,
@@ -76,9 +76,9 @@
   },
   {
    "id": 9,
-   "activation": 5.3457,
-   "contribution": 1.2796,
-   "share": 0.1342,
+   "activation": 5.3954,
+   "contribution": 1.2915,
+   "share": 0.1339,
    "pulse_ms": 201
   },
   {
@@ -97,24 +97,24 @@
   },
   {
    "id": 12,
-   "activation": 0.3584,
-   "contribution": 0.0434,
-   "share": 0.0046,
-   "pulse_ms": 7
+   "activation": 0.482,
+   "contribution": 0.0584,
+   "share": 0.0061,
+   "pulse_ms": 9
   },
   {
    "id": 13,
-   "activation": 2.7626,
-   "contribution": 0.4096,
-   "share": 0.0429,
-   "pulse_ms": 64
+   "activation": 3.0204,
+   "contribution": 0.4478,
+   "share": 0.0464,
+   "pulse_ms": 70
   },
   {
    "id": 14,
-   "activation": 0.076,
-   "contribution": 0.0211,
-   "share": 0.0022,
-   "pulse_ms": 3
+   "activation": 0.1659,
+   "contribution": 0.046,
+   "share": 0.0048,
+   "pulse_ms": 7
   },
   {
    "id": 15,
@@ -132,10 +132,10 @@
   },
   {
    "id": 17,
-   "activation": 0.2927,
-   "contribution": 0.0544,
-   "share": 0.0057,
-   "pulse_ms": 9
+   "activation": 0.3459,
+   "contribution": 0.0643,
+   "share": 0.0067,
+   "pulse_ms": 10
   },
   {
    "id": 18,
@@ -146,10 +146,10 @@
   },
   {
    "id": 19,
-   "activation": 1.9286,
-   "contribution": 0.1763,
-   "share": 0.0185,
-   "pulse_ms": 28
+   "activation": 1.5891,
+   "contribution": 0.1453,
+   "share": 0.0151,
+   "pulse_ms": 23
   },
   {
    "id": 20,
@@ -167,10 +167,10 @@
   },
   {
    "id": 22,
-   "activation": 3.5874,
-   "contribution": 0.4087,
-   "share": 0.0428,
-   "pulse_ms": 64
+   "activation": 3.4805,
+   "contribution": 0.3965,
+   "share": 0.0411,
+   "pulse_ms": 62
   },
   {
    "id": 23,
@@ -181,10 +181,10 @@
   },
   {
    "id": 24,
-   "activation": 6.7233,
-   "contribution": 1.6109,
-   "share": 0.1689,
-   "pulse_ms": 253
+   "activation": 6.82,
+   "contribution": 1.6341,
+   "share": 0.1694,
+   "pulse_ms": 254
   }
  ],
  "sent": {
@@ -195,6 +195,12 @@
    "t": "2026-11-24T05:00:00+00:00",
    "observed": 2160.7,
    "forecast": 2568.6,
+   "alive": 25
+  },
+  {
+   "t": "2026-11-24T06:00:00+00:00",
+   "observed": 2095.0,
+   "forecast": 2574.2,
    "alive": 25
   }
  ],
