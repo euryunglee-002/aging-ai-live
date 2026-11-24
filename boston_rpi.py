@@ -56,7 +56,7 @@ DEAD_FLAG = B.STATE_DIR / "aging_dead.flag"
 ISO_USER = (os.environ.get("ISO_NE_USER") or "").strip()
 ISO_PASS = (os.environ.get("ISO_NE_PASSWORD") or "").strip()
 ISO_BASE = os.environ.get("ISO_NE_BASE", "https://webservices.iso-ne.com/api/v1.1")
-NEMA_LOC = os.environ.get("NEMA_LOCATION_ID", "4008")          # .Z.NEMASSBOST
+NEMA_LOC = os.environ.get("NEMA_LOCATION_ID", "4008")          # NEMA load zone id
 
 # ------------------------------------------------------------------ EIA (fallback)
 EIA_KEY = (os.environ.get("EIA_API_KEY") or "").strip()
@@ -84,10 +84,28 @@ def _find_records(obj):
 
 
 def fetch_isone_day(day):
-    url = f"{ISO_BASE}/realtimehourlydemand/day/{day:%Y%m%d}/location/{NEMA_LOC}.json"
+    """One day of ISO-NE five-minute estimated zonal load, NEMA zone only.
+    Same feed the frozen model was trained on (aging_ai_boston run of 22 Sep 2026)."""
+    url = f"{ISO_BASE}/fiveminuteestimatedzonalload/day/{day:%Y%m%d}.json"
     r = requests.get(url, auth=(ISO_USER, ISO_PASS), headers={"Accept": "application/json"}, timeout=60)
     r.raise_for_status()
-    return [(rec["BeginDate"], rec["Load"]) for rec in _find_records(r.json())]
+    try:
+        recs = r.json()["isone_web_services"]["five_min_estimated_zonal_loads"]["five_min_estimated_zonal_load"]
+    except (KeyError, TypeError, ValueError):
+        return []
+    if isinstance(recs, dict):
+        recs = [recs]
+    out = []
+    for it in recs:
+        try:
+            if int(it.get("load_zone_id", -1)) != int(NEMA_LOC):
+                continue
+        except (TypeError, ValueError):
+            continue
+        ts, mw = it.get("interval_begin_date"), it.get("estimated_load_mw")
+        if ts is not None and mw is not None:
+            out.append((ts, mw))
+    return out
 
 
 def fetch_nema_isone(days, start_date=None, stop_after_fail=7):
@@ -121,10 +139,13 @@ def fetch_nema_isone(days, start_date=None, stop_after_fail=7):
     if not pts:
         raise RuntimeError("ISO-NE returned no NEMA data")
     df = pd.DataFrame(pts, columns=["t", "mw"])
-    out = pd.DataFrame({"timestamp_utc": pd.to_datetime(df["t"], utc=True).dt.floor("h"),
-                        "demand_mw": pd.to_numeric(df["mw"], errors="coerce")})
-    out = (out[out["demand_mw"] > 0].groupby("timestamp_utc", as_index=False)["demand_mw"].mean()
-           .sort_values("timestamp_utc"))
+    five = pd.DataFrame({"t": pd.to_datetime(df["t"], utc=True),
+                         "demand_mw": pd.to_numeric(df["mw"], errors="coerce")})
+    five = five[five["demand_mw"] > 0].drop_duplicates("t")
+    five["timestamp_utc"] = five["t"].dt.floor("h")
+    g = five.groupby("timestamp_utc")["demand_mw"]
+    out = g.mean().to_frame()
+    out = out[g.count() >= 11].reset_index().sort_values("timestamp_utc")   # complete hours only
     # Fill missing hours with NaN so the 1 h / 24 h / 168 h lags follow real time, not row position.
     return out.set_index("timestamp_utc").asfreq("h").reset_index()
 

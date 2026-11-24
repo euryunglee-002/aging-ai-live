@@ -37,7 +37,7 @@ def _t(s):
 def main():
     old = json.loads(OUT.read_text()) if OUT.exists() else {}
     now = datetime.now(timezone.utc)
-    if old.get("mode") == "mirror" and old.get("updated_utc") and \
+    if old.get("publisher") == "pi" and old.get("updated_utc") and \
             now - _t(old["updated_utc"]) < timedelta(hours=PI_PRIORITY_HOURS):
         print("The installation published recently; leaving its record as it is.")
         return
@@ -66,6 +66,7 @@ def main():
                      if newest - _t(k) <= timedelta(hours=HISTORY_HOURS - 1)]
     st["copper_ms"] = [0] * R.B.HIDDEN          # no copper attached
     st["mode"] = "standalone"
+    st["publisher"] = "cloud"
     st["has_forecast"] = True
     OUT.write_text(json.dumps(st, indent=1))
     print(f"{st['input_hour_boston']}: observed {st['observed_mw']:,} MW -> "
