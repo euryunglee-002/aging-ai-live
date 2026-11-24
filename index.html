@@ -35,7 +35,8 @@
   @keyframes beat{50%{opacity:0}}
 
   #cells{position:absolute;left:56px;top:100px}
-  .legend{position:absolute;left:56px;top:900px;width:820px;font:14px/1.8 var(--mono);color:var(--mid)}
+  .legend{position:absolute;left:56px;top:886px;width:820px;font:14px/25px var(--mono);color:var(--mid)}
+  .legend .map{color:var(--ink2);margin-bottom:6px;white-space:normal}
   .legend i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:8px}
   .legend span{margin-right:30px}
 
@@ -45,8 +46,9 @@
   .num.deep{color:var(--deep)}
   .lab{font:14px/1.5 var(--mono);color:var(--mid);margin-top:8px}
 
-  #term{position:absolute;left:960px;right:56px;top:232px;height:560px;overflow:hidden;font:14.5px/21px var(--mono);color:var(--ink2);
-        border-top:1px solid var(--rule);padding-top:12px;white-space:pre}
+  #replay{position:absolute;left:960px;right:56px;top:240px;font:14px var(--mono);color:var(--mid);border-top:1px solid var(--rule);padding-top:12px}
+  #term{position:absolute;left:960px;right:56px;top:276px;height:516px;overflow:hidden;font:14.5px/21px var(--mono);color:var(--ink2);
+        padding-top:4px;white-space:pre}
   #term div{height:21px;overflow:hidden;text-overflow:ellipsis}
   #term .h{color:var(--ink)}
   #term .p{color:var(--deep)}
@@ -71,7 +73,8 @@
 
   <svg id="cells" width="820" height="780" aria-label="25 cells"></svg>
   <div class="legend">
-    <div><span><i style="background:var(--cuso4)"></i>pulse, this hour</span><span><i id="cumKey"></i>current, total</span><span>× dead</span></div>
+    <div class="map">Each circle maps to one tube. When connected, longer pulses give copper more time to grow from the upper electrode toward the lower one.</div>
+    <div><span><i style="background:var(--cuso4)"></i>Pulse duration (ms)</span><span><i id="cumKey"></i>Cumulative pulse duration</span><span>× dead</span></div>
     <div id="copper"></div>
     <div>ISO New England · NEMA 4008 &nbsp;/&nbsp; Open-Meteo · Boston &nbsp;/&nbsp; weights fixed 2026-09-22</div>
   </div>
@@ -82,6 +85,7 @@
     <div><div class="num deep" id="fc">—</div><div class="lab" id="fcT">forecast</div></div>
   </div>
 
+  <div id="replay"></div>
   <div id="term"></div>
 
   <div class="panel-lab"><span id="panelTitle"></span><span id="panelNote"></span></div>
@@ -137,7 +141,7 @@ function state(s){
   const behind = Date.now() - (new Date(s.forecast_hour_boston).getTime() + HOUR);
   const ended = s.alive === 0 || (s.sent && s.sent.status === "terminated");
   e.className = !ended && behind <= 0 ? "live" : "";
-  e.textContent = ended ? "terminated" : behind <= 0 ? "live" : behind < 48 * HOUR ? "waiting for data" : "last record";
+  e.textContent = ended ? "terminated" : behind <= 0 ? "live" : behind < 48 * HOUR ? "Waiting for next hourly reading" : "last record";
 }
 
 // ---------------------------------------------------------------- 25 cells
@@ -227,12 +231,13 @@ function lines(s){
   t(`next hour complete at ${hhmm(plusH(s.forecast_hour_boston, 1))} Boston`, "dim");
   return L;
 }
-const VIS = 26;
+const VIS = 23;
 let player = {timer: null, key: ""};
 function play(s){
   const key = s.updated_utc + "|" + s.input_hour_utc;
   if (key === player.key && player.timer) return;
   player.key = key; clearTimeout(player.timer);
+  $("replay").textContent = `Replaying the ${hhmm(s.updated_utc)} forecast · Boston time`;
   const L = lines(s), term = $("term");
   let k = 0;
   const reset = () => {                       // every cycle starts with the hour's circles empty
