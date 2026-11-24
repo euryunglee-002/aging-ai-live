@@ -177,6 +177,7 @@ function lit(j, ms){
     e.style.transition = "none"; e.style.transform = `scale(${from})`; e.getBoundingClientRect();
     e.style.transition = `transform ${dur}ms ${ease}`; e.style.transform = "scale(1)"; };
   grow(hr, 0, Math.max(ms, 260), "ease-out");
+  const lab = $("ms" + j); if (lab) lab.setAttribute("fill", C.deep);
   if (tot[j] > 0) grow(cu, Math.sqrt(Math.max(0, tot[j] - ms) / tot[j]), Math.max(ms, 120), "linear");
   if (rip){
     rip.style.transition = "none"; rip.style.transform = "scale(.4)"; rip.style.opacity = "1"; rip.getBoundingClientRect();
@@ -239,8 +240,17 @@ function play(s){
   player.key = key; clearTimeout(player.timer);
   const L = lines(s), term = $("term");
   let k = 0;
+  const reset = () => {                       // every cycle starts with the hour's circles empty
+    const {tot} = totals(s), ns = s.neurons || [];
+    for (let j = 0; j < N; j++){
+      const hr = $("hr" + j), cu = $("cu" + j), ms = (ns[j] || {}).pulse_ms || 0;
+      if (hr){ hr.style.transition = "none"; hr.style.transform = "scale(0)"; }
+      const lab = $("ms" + j); if (lab) lab.setAttribute("fill", C.muted);
+      if (cu && tot[j] > 0){ cu.style.transition = "none"; cu.style.transform = `scale(${Math.sqrt(Math.max(0, tot[j] - ms) / tot[j])})`; }
+    }
+  };
   const step = () => {
-    if (k === 0) term.innerHTML = "";
+    if (k === 0){ term.innerHTML = ""; reset(); }
     const prev = term.lastElementChild; if (prev) prev.classList.remove("cur", "on");
     if (k >= L.length){ k = 0; player.timer = setTimeout(step, 9000); return; }
     const ln = L[k++], d = document.createElement("div");
