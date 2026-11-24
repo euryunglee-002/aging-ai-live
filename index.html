@@ -15,7 +15,7 @@
     --steel:#141416; --ink:#151617; --ink2:#46484b; --mid:#67696c; --muted:#8c8e91;
     --rule:rgba(20,22,24,.18); --faint:rgba(20,22,24,.08);
     --wall-hi:#f3f4f5; --wall:#e6e7e9; --wall-lo:#b3b5b8;
-    --cuso4:#318ecc; --cuso4-text:#1d69a9; --deep:#1f2fb8; --deposit:#13263a;
+    --cuso4:#318ecc; --cuso4-text:#1d69a9; --cyan:#5fb6ea; --deep:#1f2fb8; --deposit:#13263a;
     --room:#19191a; --floor:#2f2c27; --floor-text:#b9b4aa;
     --serif:"Times New Roman",Tinos,Times,serif;
     --sans:Helvetica,"Helvetica Neue",Arimo,Arial,sans-serif;
@@ -32,60 +32,66 @@
   .beam .right{display:flex;gap:6px 18px;align-items:center;flex-wrap:wrap;letter-spacing:.04em;text-transform:none;font-size:12px;color:#9fa1a4}
   .state{display:inline-flex;align-items:center;gap:7px;letter-spacing:.14em;text-transform:uppercase;font-size:11.5px}
   .state .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
-  .live{color:#5fb6ea} .live .dot{box-shadow:0 0 8px #5fb6ea;animation:beat 2s ease-in-out infinite}
+  .live{color:var(--cyan)} .live .dot{box-shadow:0 0 8px var(--cyan);animation:beat 2s ease-in-out infinite}
   .delayed{color:#c9cacc} .wait,.offline{color:#8c8e91} .ended{color:#fff}
   @keyframes beat{0%,100%{opacity:1}50%{opacity:.25}}
 
-  /* the dark room */
   .head{background:radial-gradient(ellipse 60% 120% at 30% 0%,#2c2d2f 0%,var(--room) 70%);color:#fff}
-  .head .in{max-width:1100px;margin:0 auto;padding:40px 64px 38px;display:grid;grid-template-columns:auto 1fr;gap:12px 48px;align-items:end}
-  h1{font:400 72px/1 var(--serif);letter-spacing:-.02em;margin:0}
-  .q{font:italic 400 21px/1.3 var(--serif);margin:0;color:#e7e9ea;max-width:520px}
-  .lede{grid-column:1 / -1;margin:6px 0 0;max-width:760px;color:#c9cbcd;font-size:15.5px}
-  .mode{grid-column:1 / -1;margin:0;font-size:13px;color:#8f9194}
+  .head .in{max-width:1180px;margin:0 auto;padding:30px 48px 28px;display:grid;grid-template-columns:auto 1fr;gap:10px 44px;align-items:end}
+  h1{font:400 60px/1 var(--serif);letter-spacing:-.02em;margin:0}
+  .q{font:italic 400 19px/1.3 var(--serif);margin:0;color:#e7e9ea;max-width:520px}
+  .lede{grid-column:1 / -1;margin:4px 0 0;max-width:820px;color:#c9cbcd;font-size:14.5px}
 
-  .shelf{max-width:1100px;margin:0 auto;padding:0 64px}
-  .level{padding:42px 0 40px;border-bottom:1px solid rgba(20,22,24,.28)}
+  .shelf{max-width:1180px;margin:0 auto;padding:0 48px}
+  .level{padding:38px 0 38px;border-bottom:1px solid rgba(20,22,24,.28)}
   .level:last-of-type{border-bottom:0}
-  .err{margin:20px 0 0;padding:9px 12px;border-left:2px solid var(--deep);background:rgba(255,255,255,.55);font-size:13px;color:var(--ink2);display:none}
+  .err{margin:18px 0 0;padding:9px 12px;border-left:2px solid var(--deep);background:rgba(255,255,255,.55);font-size:13px;color:var(--ink2);display:none}
 
   .kicker{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
   .kicker b{font-weight:400;color:var(--muted);margin-right:14px}
-  h2{font:400 40px/1.1 var(--serif);letter-spacing:-.01em;margin:12px 0 6px}
-  h3{font:400 25px/1.15 var(--serif);margin:30px 0 4px}
-  .sub{color:var(--ink2);margin:0 0 16px;max-width:760px}
-  .fine{color:var(--mid);font-size:13px;margin:10px 0 0;max-width:780px}
+  h2{font:400 36px/1.1 var(--serif);letter-spacing:-.01em;margin:10px 0 6px}
+  .sub{color:var(--ink2);margin:0 0 16px;max-width:780px}
+  .fine{color:var(--mid);font-size:12.5px;margin:10px 0 0;max-width:780px}
 
-  .flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:start;gap:0 10px;margin:22px 0 6px}
-  .num{font:400 46px/1 var(--serif);letter-spacing:-.01em;font-variant-numeric:lining-nums}
-  .num small{font:400 16px var(--sans);color:var(--ink2);margin-left:6px;letter-spacing:0}
+  /* numbers */
+  .flow{display:grid;grid-template-columns:1fr 30px 1fr 30px 1fr;align-items:start;gap:0 10px;margin:16px 0 22px}
+  .num{font:400 40px/1 var(--serif);letter-spacing:-.01em;font-variant-numeric:lining-nums}
+  .num small{font:400 15px var(--sans);color:var(--ink2);margin-left:6px;letter-spacing:0}
   .num.deep{color:var(--deep)}
-  .cap{margin-top:8px}
-  .cap2{color:var(--mid);font-size:13px}
-  .arrow{height:24px;margin-top:12px}
+  .cap{margin-top:6px;font-size:14px}
+  .cap2{color:var(--mid);font-size:12.5px}
+  .arrow{height:22px;margin-top:9px}
 
-  .key{display:flex;flex-wrap:wrap;gap:4px 20px;font-size:12.5px;color:var(--ink2);margin:18px 0 6px}
+  /* live: the 25 cells beside the running code */
+  .live-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:28px;align-items:start}
+  .panel-title{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);margin:0 0 8px;display:flex;justify-content:space-between;gap:10px}
+  .panel-title span:last-child{letter-spacing:.02em;text-transform:none;color:var(--deep);font-variant-numeric:tabular-nums}
+  #body{display:block;width:100%}
+
+  .console{background:var(--steel);color:#d7d9db;border-radius:2px;font:12.5px/1.62 var(--mono);overflow:hidden}
+  .console .bar{display:flex;justify-content:space-between;gap:10px;padding:8px 14px;border-bottom:1px solid #2a2b2e;color:#8c8e91;font-size:11.5px}
+  .console .bar b{font-weight:400;color:#d7d9db}
+  .code{padding:8px 0}
+  .ln{display:grid;grid-template-columns:34px minmax(0,1fr);padding:0 14px 0 0;position:relative;white-space:pre}
+  .ln .no{color:#56585c;text-align:right;padding-right:12px;user-select:none}
+  .ln .tx{overflow:hidden;text-overflow:ellipsis}
+  .ln .cm{color:#6f7276}
+  .ln .kw{color:#9ecbea}
+  .ln .val{color:var(--cyan)}
+  .ln.on{background:rgba(95,182,234,.16)}
+  .ln.on .no{color:var(--cyan)}
+  .ln.on::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--cyan)}
+  .log{border-top:1px solid #2a2b2e;padding:8px 14px 10px;height:calc(7.5em + 18px);overflow:hidden;color:#9fa1a4;font-size:11.5px;line-height:1.5}
+  .log div{white-space:pre;overflow:hidden;text-overflow:ellipsis}
+  .log div:last-child{color:#e6e8ea}
+
+  .key{display:flex;flex-wrap:wrap;gap:4px 20px;font-size:12.5px;color:var(--ink2);margin:14px 0 6px}
   .key span{white-space:nowrap;display:inline-flex;align-items:center;gap:7px}
   .key .c{width:10px;height:10px;border-radius:50%;background:var(--cuso4)}
   .key .o{width:10px;height:10px;border-radius:50%;border:1.2px solid var(--muted)}
   .key .lp{width:20px;border-top:1.6px solid var(--cuso4)}
-  .key .ln{width:20px;border-top:1.6px solid #9a9c9f}
+  .key .ln2{width:20px;border-top:1.6px solid #9a9c9f}
   .key .ld{width:20px;border-top:2.4px solid var(--deep)}
-  #nowPulse{font-variant-numeric:tabular-nums}
-
-  /* the code, this hour */
-  .steps{margin-top:18px;border-top:1px solid var(--rule)}
-  .step{display:grid;grid-template-columns:34px minmax(0,1fr) minmax(170px,auto);gap:4px 18px;padding:13px 0;border-bottom:1px solid var(--rule);align-items:baseline}
-  .step .n{font:400 13px var(--mono);color:var(--muted)}
-  .step .what{font-size:14.5px}
-  .step code{display:block;font:12.5px/1.5 var(--mono);color:var(--ink2);margin-top:3px;white-space:pre-wrap;word-break:break-word}
-  .step code .cm{color:var(--muted)}
-  .step .val{text-align:right;font-size:14px;font-variant-numeric:tabular-nums}
-  .step .val small{display:block;color:var(--mid);font-size:12px}
-  .step.done .n::after{content:" ✓";color:var(--cuso4-text)}
-  .step.now{background:linear-gradient(90deg,rgba(49,142,204,.10),rgba(49,142,204,0) 70%)}
-  .step.now .n{color:var(--cuso4-text)}
-  .step.now .what::before{content:"now · ";color:var(--cuso4-text);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
 
   .photos{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;margin-top:20px}
   .photos figure{margin:0;overflow:hidden;background:#d0d2d4}
@@ -99,26 +105,31 @@
   .legend i.f{border-top:1.5px dashed var(--deep)}
   .legend i.r{width:14px;height:10px;border:0;background:rgba(49,142,204,.14);vertical-align:-1px}
   .pair{display:flex;gap:56px;flex-wrap:wrap;margin:22px 0 0}
-  .pair .num{font-size:40px}
 
   footer{background:var(--floor);color:var(--floor-text);font-size:12.5px}
-  footer .in{max-width:1100px;margin:0 auto;padding:22px 64px 30px;display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
+  footer .in{max-width:1180px;margin:0 auto;padding:22px 48px 30px;display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
 
+  @media (max-width:900px){
+    .live-grid{grid-template-columns:1fr}
+  }
   @media (max-width:760px){
     .beam{padding:9px 16px}
-    .head .in{padding:28px 18px 26px;grid-template-columns:1fr}
-    h1{font-size:52px} .q{font-size:18px}
-    .shelf{padding:0 18px}
-    .level{padding:32px 0 30px}
-    h2{font-size:30px} h3{font-size:21px}
-    .flow{grid-template-columns:1fr;gap:18px}
+    .head .in{padding:24px 18px 22px;grid-template-columns:1fr}
+    h1{font-size:46px} .q{font-size:17px}
+    .shelf{padding:0 14px}
+    .level{padding:30px 0 30px}
+    h2{font-size:28px}
+    .flow{grid-template-columns:1fr 1fr;gap:16px}
     .flow .arrow{display:none}
-    .num{font-size:40px}
-    .step{grid-template-columns:26px minmax(0,1fr)}
-    .step .val{grid-column:2;text-align:left}
+    .flow > div:last-child{grid-column:1 / -1}
+    .num{font-size:34px}
+    .console{font-size:11px}
+    .ln{grid-template-columns:26px minmax(0,1fr)}
+    .ln .tx{white-space:pre-wrap;overflow:visible}
+    .ln .cm{display:none}
+    .ln .val{display:block;padding-left:4ch}
     .photos{grid-template-columns:1fr 1fr}
     .photos .tall{grid-column:1 / -1;grid-row:auto;aspect-ratio:1500/1100}
-    .pair{gap:24px 40px}
     footer .in{padding:18px 16px 26px}
   }
 </style>
@@ -138,10 +149,8 @@
   <div class="in">
     <h1>Aging AI</h1>
     <p class="q">If artificial intelligence were visibly finite, would we still consume it as casually as we do now?</p>
-    <p class="lede">A network forecasts Boston's electricity demand every hour. Each of its 25 neurons drives one copper
-      cell: the more a neuron carries a forecast, the longer its cell gets current. When copper bridges a cell, that
-      neuron is gone for good. This page shows the network as it works.</p>
-    <p class="mode" id="mode"></p>
+    <p class="lede" id="mode">A network forecasts Boston's electricity demand every hour. Each of its 25 neurons drives one copper
+      cell; when copper bridges a cell, that neuron is gone for good.</p>
   </div>
 </header>
 
@@ -149,21 +158,20 @@
   <div class="err" id="err"></div>
 
   <section class="level">
-    <div class="kicker"><b>01</b>Now</div>
-    <h2>Which neurons are working this hour</h2>
+    <div class="kicker"><b>01</b>Live</div>
     <div class="flow">
       <div>
         <div class="num" id="obs">—</div>
         <div class="cap">Demand, last full hour</div>
         <div class="cap2" id="obsT">&nbsp;</div>
       </div>
-      <svg class="arrow" viewBox="0 0 34 24" width="34"><line x1="0" y1="12" x2="32" y2="12" stroke="#151617"/><path d="M27 8 L32 12 L27 16" fill="none" stroke="#151617"/></svg>
+      <svg class="arrow" viewBox="0 0 30 22" width="30"><line x1="0" y1="11" x2="28" y2="11" stroke="#151617"/><path d="M23 7 L28 11 L23 15" fill="none" stroke="#151617"/></svg>
       <div>
         <div class="num" id="act">—</div>
         <div class="cap">neurons working</div>
         <div class="cap2" id="actT">&nbsp;</div>
       </div>
-      <svg class="arrow" viewBox="0 0 34 24" width="34"><line x1="0" y1="12" x2="32" y2="12" stroke="#151617"/><path d="M27 8 L32 12 L27 16" fill="none" stroke="#151617"/></svg>
+      <svg class="arrow" viewBox="0 0 30 22" width="30"><line x1="0" y1="11" x2="28" y2="11" stroke="#151617"/><path d="M23 7 L28 11 L23 15" fill="none" stroke="#151617"/></svg>
       <div>
         <div class="num deep" id="fc">—</div>
         <div class="cap">Forecast, the hour after</div>
@@ -171,26 +179,36 @@
       </div>
     </div>
 
+    <div class="live-grid">
+      <div>
+        <div class="panel-title"><span>The 25 cells · N00–N24</span><span id="nowCell"></span></div>
+        <svg id="body" role="img" aria-label="the 25 cells as a 5 by 5 grid"></svg>
+        <p class="fine" id="bodyNote"></p>
+      </div>
+      <div>
+        <div class="panel-title"><span>The code, running this hour's cycle</span><span id="nowLine"></span></div>
+        <div class="console">
+          <div class="bar"><b>aging_ai · boston_rpi.cycle()</b><span id="conHead"></span></div>
+          <div class="code" id="code"></div>
+          <div class="log" id="log"></div>
+        </div>
+        <p class="fine" id="conNote"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="level">
+    <div class="kicker"><b>02</b>How this hour's forecast was made</div>
+    <h2>15 inputs, 25 neurons, one forecast</h2>
+    <p class="sub">Every line is a value that flowed through the network this hour. Neuron j above sits in the same column as cell N<i>j</i>.</p>
     <div class="key">
       <span><i class="c"></i>working neuron (size = activation)</span>
       <span><i class="o"></i>silent neuron (activation 0)</span>
       <span><i class="lp"></i>input pushing a neuron up</span>
-      <span><i class="ln"></i>input pushing it down</span>
+      <span><i class="ln2"></i>input pushing it down</span>
       <span><i class="ld"></i>neuron's share of the forecast</span>
     </div>
-    <svg id="net" width="100%" style="display:block" role="img" aria-label="the network this hour: 15 inputs, 25 neurons, one forecast"></svg>
-
-    <h3>Each working neuron becomes current in its own cell</h3>
-    <p class="sub">The Arduino Mega runs the cells one at a time, N00 to N24, each for its pulse time. Shown here at real speed, repeating.</p>
-    <svg id="cells" width="100%" style="display:block" role="img" aria-label="pulse time for each of the 25 cells"></svg>
-    <p class="fine" id="sent"></p>
-  </section>
-
-  <section class="level">
-    <div class="kicker"><b>02</b>The code, this hour</div>
-    <h2>One cycle, step by step</h2>
-    <p class="sub" id="cycleSub">Every step below ran with the numbers shown. The weights W1, b1, W2, b2 were fixed on 22 September 2026.</p>
-    <div class="steps" id="steps"></div>
+    <svg id="net" width="100%" style="display:block" role="img" aria-label="the network this hour"></svg>
   </section>
 
   <section class="level">
@@ -232,20 +250,20 @@
 <footer>
   <div class="in">
     <span>Data: ISO New England, NEMA zone 4008 (five-minute estimated load, hourly means) · Open-Meteo, Boston.</span>
-    <span>Trained once, then frozen. It does not learn; it only ages.</span>
+    <span>Trained once on 22 September 2026, then frozen. It does not learn; it only ages.</span>
   </div>
 </footer>
 
 <script>
 const N = 25, TZ = "America/New_York", HOUR = 3.6e6, DAY = 864e5;
+const FULL_GAP_MS = 100000;   // display scale: 100 s of current draws a deposit across the whole gap (not a measured threshold)
 const C = {ink: "#151617", ink2: "#46484b", mid: "#67696c", muted: "#8c8e91", steel: "#141416",
            faint: "rgba(20,22,24,.09)", axis: "rgba(20,22,24,.45)", neg: "#9a9c9f",
            cuso4: "#318ecc", cuso4Top: "#5aa9dc", cuso4Bot: "#2a7fbf", deep: "#1f2fb8", deposit: "#13263a",
            glass: "#eef3f6", glassLine: "#7f9fb3", replay: "rgba(49,142,204,.14)"};
-const INPUTS = [
-  ["now", "MW"], ["−1 h", "MW"], ["−24 h", "MW"], ["−1 week", "MW"],
-  ["temp.", "°C"], ["humidity", "%"], ["feels like", "°C"], ["rain", "mm"],
-  ["hour sin", ""], ["hour cos", ""], ["day sin", ""], ["day cos", ""], ["year sin", ""], ["year cos", ""], ["weekend", ""]];
+const INPUTS = [["now", "MW"], ["−1 h", "MW"], ["−24 h", "MW"], ["−1 week", "MW"], ["temp.", "°C"], ["humidity", "%"],
+  ["feels like", "°C"], ["rain", "mm"], ["hour sin", ""], ["hour cos", ""], ["day sin", ""], ["day cos", ""],
+  ["year sin", ""], ["year cos", ""], ["weekend", ""]];
 const GROUPS = [["Demand · ISO-NE", 0, 4], ["Weather · Open-Meteo", 4, 8], ["Calendar · Boston time", 8, 15]];
 const $ = id => document.getElementById(id);
 const fmtMW = v => v == null ? "—" : Math.round(v).toLocaleString("en-US");
@@ -254,6 +272,7 @@ const hhmm = iso => bost(iso, {hour: "2-digit", minute: "2-digit", hourCycle: "h
 const day = iso => bost(iso, {month: "short", day: "numeric"});
 const plusH = (iso, h) => new Date(new Date(iso).getTime() + h * HOUR).toISOString();
 const nn = i => String(i).padStart(2, "0");
+const esc = t => t.replace(/&/g, "&amp;").replace(/</g, "&lt;");
 const NS = "http://www.w3.org/2000/svg";
 function el(tag, attrs, parent, text){
   const e = document.createElementNS(NS, tag);
@@ -279,16 +298,15 @@ function fmtInput(i, v){
   if (i === 14) return v ? "yes" : "no";
   return i < 8 ? v.toFixed(1) : v.toFixed(2);
 }
-// the cell columns: neuron j sits above cell j in both figures
-const cols = W => { const L = 2, R = 2, cw = (W - L - R) / N; return {L, R, cw, x: j => L + (j + .5) * cw}; };
+const sec = ms => ms >= 1000 ? (ms / 1000).toFixed(ms >= 1e4 ? 0 : 1) + " s" : ms + " ms";
 
 // ---------------------------------------------------------------- render
 let S = null;
 function render(s){
   S = s;
-  $("mode").textContent = s.mode === "standalone"
-    ? "No copper is attached right now: the network runs in the cloud and nothing is sent to the cells."
-    : "Running with the installation: these are the Raspberry Pi's own records, and the pulses go to the copper.";
+  if (s.mode === "standalone")
+    $("mode").textContent = "A network forecasts Boston's electricity demand every hour. Each of its 25 neurons drives one copper cell; " +
+      "when copper bridges a cell, that neuron is gone for good. Right now no copper is attached: the network runs in the cloud and nothing is sent to the cells.";
   if (!s.has_forecast){
     setPill(s.error ? "delayed" : "wait", s.error ? "Error" : "Waiting");
     $("src").textContent = "waiting for the first forecast";
@@ -296,31 +314,18 @@ function render(s){
     return;
   }
   pill(s);
-
   const dead = new Set(s.dead || []);
   const working = (s.neurons || []).filter(n => n.activation > 0 && !dead.has(n.id));
   $("obs").innerHTML = fmtMW(s.observed_mw) + "<small>MW</small>";
   $("obsT").textContent = day(s.input_hour_boston) + ", " + hhmm(s.input_hour_boston) + "–" + hhmm(s.forecast_hour_boston) + " Boston";
   $("act").innerHTML = working.length + "<small>of " + (N - dead.size) + " alive</small>";
-  $("actT").textContent = (N - dead.size - working.length) + " silent this hour" + (dead.size ? " · dead: " + [...dead].map(d => "N" + nn(d)).join(", ") : " · none dead");
+  $("actT").textContent = (N - dead.size - working.length) + " silent · " + (dead.size ? "dead: " + [...dead].map(d => "N" + nn(d)).join(", ") : "none dead");
   $("fc").innerHTML = fmtMW(s.forecast_mw) + "<small>MW</small>";
   $("fcT").textContent = "for " + hhmm(s.forecast_hour_boston) + "–" + hhmm(plusH(s.forecast_hour_boston, 1)) + " Boston";
   showError(s.error);
-  drawNet(s); drawCells(s); drawSteps(s);
-  drawChart(s.history || []);
-  const st = s.sent || {};
-  $("sent").textContent = {
-    "delivered": "Sent to the copper at " + (st.utc ? hhmm(st.utc) + " Boston" : "this hour") + (st.total_ms ? ", " + st.total_ms.toLocaleString("en-US") + " ms in total." : "."),
-    "already sent this hour": "This hour's pulses were already delivered to the copper.",
-    "view only": "No copper is attached right now, so this sequence was not sent; it is what the Mega would run.",
-    "stale": "The data was too old, so nothing was sent.",
-    "error": "The Arduino did not confirm the pulses; it retries next cycle.",
-    "terminated": "The body reported a short. The network has stopped."
-  }[st.status] || "";
-  startPulses(s);
+  drawBody(s); drawNet(s); drawChart(s.history || []);
+  startCycle(s);
 }
-
-// LIVE only while the hour being forecast is still under way
 function pill(s){
   if (!s.has_forecast) return;
   const behindH = (Date.now() - (new Date(s.forecast_hour_boston).getTime() + HOUR)) / HOUR;
@@ -333,74 +338,228 @@ function pill(s){
   $("src").textContent = behindH > 0 && !ended ? "waiting for the next hour of ISO-NE data" : "";
 }
 
-// ---------------------------------------------------------------- the network
+// ---------------------------------------------------------------- the 25 cells, 5 x 5
+function cellTotals(s){
+  const real = (s.copper_ms || []).some(c => c > 0);
+  return {real, tot: real ? s.copper_ms : (s.pulse_total_ms || new Array(N).fill(0))};
+}
+function drawBody(s){
+  const svg = $("body"); svg.innerHTML = "";
+  const W = Math.max(280, Math.round(svg.parentNode.clientWidth || 460));
+  const gap = W < 420 ? 6 : 10, tw = (W - gap * 4) / 5, th = Math.round(tw * 1.32), H = th * 5 + gap * 4;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
+  const defs = el("defs", {}, svg);
+  const mk = (id, a, b) => { const g = el("linearGradient", {id, x1: 0, y1: 0, x2: 0, y2: 1}, defs);
+    el("stop", {offset: "0", "stop-color": C.glass}, g); el("stop", {offset: ".08", "stop-color": C.glass}, g);
+    el("stop", {offset: ".085", "stop-color": a}, g); el("stop", {offset: "1", "stop-color": b}, g); };
+  mk("sol", C.cuso4Top, C.cuso4Bot); mk("solOn", "#9ad6ff", "#46a6e8");
+  const dead = new Set(s.dead || []);
+  const ns = s.neurons || [];
+  const {real, tot} = cellTotals(s);
+  const small = tw < 70;
+  for (let i = 0; i < N; i++){
+    const gx = (i % 5) * (tw + gap), gy = Math.floor(i / 5) * (th + gap);
+    const g = el("g", {transform: `translate(${gx},${gy})`, id: "tile" + i}, svg);
+    const isDead = dead.has(i), n = ns[i] || {}, ms = isDead ? 0 : n.pulse_ms || 0;
+    el("rect", {x: 0, y: 0, width: tw, height: th, fill: "rgba(255,255,255,.45)", stroke: "rgba(20,22,24,.14)", id: "frame" + i}, g);
+    const cx = tw / 2, tubeW = Math.min(26, tw * .3), tTop = th * .16, tBot = th * .86;
+    el("rect", {x: cx - tubeW / 2, y: tTop, width: tubeW, height: tBot - tTop, rx: tubeW / 2, fill: "url(#sol)",
+                stroke: C.glassLine, "stroke-width": .8, opacity: isDead ? .45 : 1, id: "sol" + i}, g);
+    const tip = tTop + (tBot - tTop) * .42, an = tTop + (tBot - tTop) * .76;
+    el("line", {x1: cx, x2: cx, y1: 2, y2: tip, stroke: C.steel, "stroke-width": 1.8}, g);
+    el("line", {x1: cx, x2: cx, y1: an, y2: th - 2, stroke: C.steel, "stroke-width": 1.8}, g);
+    el("line", {x1: cx, x2: cx, y1: tip + 2, y2: an - 2, stroke: C.deep, "stroke-width": 2, "stroke-dasharray": "3 3", opacity: 0, id: "cur" + i}, g);
+    const f = Math.min(.96, (tot[i] || 0) / FULL_GAP_MS), h = (an - tip) * f;
+    if (isDead){
+      el("rect", {x: cx - tubeW * .22, y: tip, width: tubeW * .44, height: an - tip, fill: C.deposit}, g);
+    } else if (h > .6){
+      const w = Math.max(1.5, tubeW * (.14 + .3 * Math.sqrt(f)));
+      el("path", {d: `M${cx - 1.2},${tip} L${cx - w},${tip + h * .42} L${cx - w * .45},${tip + h * .66} L${cx - w * .8},${tip + h}`
+                    + ` L${cx + w * .55},${tip + h * .84} L${cx + w},${tip + h * .38} L${cx + 1.2},${tip} Z`,
+                  fill: real ? C.deposit : "rgba(19,38,58,.22)", stroke: real ? "none" : C.deposit, "stroke-width": 1, "stroke-dasharray": real ? "" : "2 2"}, g);
+    }
+    el("text", {x: small ? 4 : 6, y: 14, "font-size": small ? 9.5 : 11, fill: isDead ? C.muted : C.ink, "font-family": "Menlo, Consolas, monospace",
+                "text-decoration": isDead ? "line-through" : "none"}, g, "N" + nn(i));
+    el("text", {x: tw - 5, y: 14, "text-anchor": "end", "font-size": small ? 10 : 11, fill: ms > 0 ? C.deep : C.muted, id: "ms" + i}, g,
+       isDead ? (small ? "×" : "dead") : ms > 0 ? ms + (small ? "" : " ms") : "0");
+    el("text", {x: tw - 5, y: th - 5, "text-anchor": "end", "font-size": small ? 9 : 10, fill: C.mid}, g, tot[i] ? sec(tot[i]) : "");
+  }
+  const since = s.pulse_total_since ? day(s.pulse_total_since) : "";
+  $("bodyNote").textContent = real
+    ? "Top right: this hour's pulse. Bottom right and the dark deposit: current each cell has received so far. Lit: the cell the code is pulsing now."
+    : "Top right: this hour's pulse. Bottom right and the dotted outline: pulse time each cell would have received" + (since ? " since " + since : "") +
+      ". No copper is attached, so nothing has been deposited. Lit: the cell the code is pulsing now.";
+}
+
+// ---------------------------------------------------------------- the running code
+const CODE = [
+  ["while True:", ""],
+  ["    load    = fetch_nema_isone()", "ISO-NE, NEMA zone"],
+  ["    weather = fetch_recent_boston_weather()", "Open-Meteo, Boston"],
+  ["    row = build_live_feature_rows(load, weather)[-1]", ""],
+  ["    if row.hour == last_hour: sleep(600); continue", "nothing new yet"],
+  ["    X  = (row[FEATURES] - x_mean) / x_std", "15 inputs"],
+  ["    z1 = X @ W1 + b1", "25 neurons"],
+  ["    a1 = np.maximum(z1, 0)", ""],
+  ["    a1[dead] = 0", "dead cells stay dead"],
+  ["    y  = (a1 @ W2 + b2) * y_std + y_mean", "MW"],
+  ["    contribution = np.abs(a1 * W2)", ""],
+  ["    share = contribution / contribution.sum()", ""],
+  ["    pulse_ms = np.rint(share * 1500)", ""],
+  ["    for cell in range(25):", ""],
+  ["        if pulse_ms[cell] > 0:", ""],
+  ["            mega.pulse(cell, pulse_ms[cell])", "D22+cell → MOSFET"],
+  ["    dead |= mega.scan_dead()", "copper bridged?"],
+  ["    publish(status)", "this website"],
+  ["    last_hour = row.hour", ""],
+];
+function hl(t){ return esc(t).replace(/\b(while|True|if|for|in|range|continue)\b/g, '<span class="kw">$1</span>'); }
+function drawCode(){
+  const box = $("code"); box.innerHTML = "";
+  CODE.forEach(([t, c], k) => {
+    const d = document.createElement("div");
+    d.className = "ln"; d.id = "L" + k;
+    d.innerHTML = `<span class="no">${k + 1}</span><span class="tx">${hl(t)}<span class="cm" id="M${k}">${c ? "  # " + esc(c) : ""}</span><span class="val" id="V${k}"></span></span>`;
+    box.appendChild(d);
+  });
+}
+drawCode();
+function logLine(t){
+  const box = $("log"), d = document.createElement("div");
+  d.textContent = t; box.appendChild(d);
+  while (box.children.length > 5) box.removeChild(box.firstChild);
+}
+
+let cyc = {timer: null, key: ""};
+function startCycle(s){
+  const key = s.updated_utc + "|" + s.input_hour_utc;
+  if (key === cyc.key && cyc.timer) return;
+  cyc.key = key; clearTimeout(cyc.timer);
+  const dead = new Set(s.dead || []), ns = s.neurons || [], inp = s.inputs || [];
+  const working = ns.filter(n => n.activation > 0 && !dead.has(n.id)).length;
+  const pulses = ns.filter(n => n.pulse_ms > 0 && !dead.has(n.id)).map(n => [n.id, n.pulse_ms]);
+  const total = pulses.reduce((a, p) => a + p[1], 0);
+  const sent = (s.sent || {}).status, standalone = s.mode === "standalone" || sent === "view only";
+  const t0 = hhmm(s.updated_utc);
+  const ih = hhmm(s.input_hour_boston) + "–" + hhmm(s.forecast_hour_boston);
+  const fh = hhmm(s.forecast_hour_boston) + "–" + hhmm(plusH(s.forecast_hour_boston, 1));
+  $("conHead").textContent = "ran " + day(s.updated_utc) + ", " + t0 + " Boston";
+  $("conNote").textContent = "This hour's cycle, replayed line by line with the values it produced. " +
+    (standalone ? "Line 16 would switch the MOSFETs; with no copper attached it was skipped." : "Line 16 switched the MOSFETs.");
+  const V = {
+    1: fmtMW(s.observed_mw) + " MW, " + ih,
+    2: inp.length ? fmtInput(4, inp[4].value) + " °C, " + fmtInput(5, inp[5].value) + " %" : "",
+    3: "hour " + ih,
+    5: "15 numbers",
+    6: "25 sums",
+    7: working + " of " + (N - dead.size) + " > 0",
+    8: dead.size + " dead",
+    9: fmtMW(s.forecast_mw) + " MW, " + fh,
+    11: "sums to 1",
+    12: pulses.length + " cells, " + total.toLocaleString("en-US") + " ms",
+    16: standalone ? "skipped: no copper" : "none bridged",
+    17: "published " + t0,
+  };
+  const order = [0, 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, "loop", 16, 17, 18, 4];
+  let k = 0, p = 0;
+  const setV = (i, t) => { $("V" + i).textContent = t ? "  # → " + t : ""; $("M" + i).style.display = t ? "none" : ""; };
+  const clear = () => { for (let i = 0; i < CODE.length; i++){ $("L" + i).classList.remove("on"); setV(i, ""); } };
+  const on = i => { for (let j = 0; j < CODE.length; j++) $("L" + j).classList.toggle("on", j === i);
+                    $("nowLine").textContent = "line " + (i + 1); };
+  const lit = (j, yes) => {
+    const sol = $("sol" + j), cur = $("cur" + j), fr = $("frame" + j);
+    if (sol) sol.setAttribute("fill", yes ? "url(#solOn)" : "url(#sol)");
+    if (cur) cur.setAttribute("opacity", yes ? 1 : 0);
+    if (fr){ fr.setAttribute("stroke", yes ? C.deep : "rgba(20,22,24,.14)"); fr.setAttribute("stroke-width", yes ? 2 : 1); }
+    const r = $("ring" + j); if (r) r.setAttribute("opacity", yes ? 1 : 0);
+  };
+  clear(); $("log").innerHTML = "";
+  logLine(`[${t0}] cycle for ${ih} Boston`);
+  const step = () => {
+    if (k >= order.length){ k = 0; p = 0; clear(); $("nowCell").textContent = ""; logLine(`[${t0}] cycle for ${ih} Boston`); cyc.timer = setTimeout(step, 600); return; }
+    const o = order[k];
+    if (o === "loop"){
+      if (p > 0) lit(pulses[p - 1][0], false);
+      if (p >= pulses.length){ p = 0; k++; $("nowCell").textContent = ""; setV(13, ""); cyc.timer = setTimeout(step, 300); return; }
+      const [j, ms] = pulses[p];
+      on(15);
+      setV(13, "cell = " + j);
+      setV(15, "N" + nn(j) + ", " + ms + " ms" + (standalone ? ", not sent" : ""));
+      lit(j, true);
+      $("nowCell").textContent = "N" + nn(j) + " · " + ms + " ms";
+      logLine(`  ${standalone ? "would pulse" : "pulse"} N${nn(j)}  ${String(ms).padStart(4)} ms`);
+      p++; cyc.timer = setTimeout(step, Math.max(ms, 90));
+      return;
+    }
+    on(o);
+    if (V[o]) setV(o, V[o]);
+    if (o === 9) logLine(`  forecast ${fh}: ${fmtMW(s.forecast_mw)} MW · ${working} neurons working`);
+    if (o === 17) logLine(`  status published · ${total.toLocaleString("en-US")} ms over ${pulses.length} cells`);
+    if (o === 4){
+      const nextAt = plusH(s.forecast_hour_boston, 1), mins = Math.round((new Date(nextAt) - Date.now()) / 6e4);
+      setV(4, "next hour at " + hhmm(nextAt) + (mins > 0 ? ", in " + mins + " min" : ", due now"));
+      k++; cyc.timer = setTimeout(step, 4200); return;
+    }
+    k++; cyc.timer = setTimeout(step, 520);
+  };
+  step();
+}
+
+// ---------------------------------------------------------------- the network (explanation)
 function drawNet(s){
   const svg = $("net"); svg.innerHTML = "";
   const W = Math.max(300, Math.round(svg.parentNode.clientWidth || 980)), small = W < 640;
-  const {x} = cols(W);
+  const L = 2, cw = (W - 4) / N, x = j => L + (j + .5) * cw;
   const yIn = small ? 34 : 70, yH = yIn + (small ? 150 : 210), yOut = yH + (small ? 96 : 120), H = yOut + (small ? 58 : 50);
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
   const ns = s.neurons || [], dead = new Set(s.dead || []);
   const act = ns.map(n => dead.has(n.id) ? 0 : n.activation || 0);
   const maxA = Math.max(1e-9, ...act);
-  // input positions, in three groups
   const gap = small ? 10 : 26, unit = (W - 2 * gap - 8) / 15;
   const xi = i => 4 + unit * (i + .5) + gap * (i >= 4) + gap * (i >= 8);
   for (const [name, a, b] of GROUPS){
     const x0 = xi(a) - unit * .4, x1 = xi(b - 1) + unit * .4;
-    el("line", {x1: x0, x2: x1, y1: small ? 12 : 13, y2: small ? 12 : 13, stroke: C.axis}, svg);
-    el("text", {x: x0, y: small ? 8 : 8, "font-size": small ? 9.5 : 10.5, fill: C.ink2, "letter-spacing": ".06em"}, svg,
-       small && name.startsWith("Calendar") ? "Calendar" : small ? name.split(" ·")[0] : name.toUpperCase());
+    el("line", {x1: x0, x2: x1, y1: 13, y2: 13, stroke: C.axis}, svg);
+    el("text", {x: x0, y: 8, "font-size": small ? 9.5 : 10.5, fill: C.ink2, "letter-spacing": ".06em"}, svg,
+       small ? name.split(" ·")[0] : name.toUpperCase());
   }
-  const inputs = s.inputs || [];
-  const E = s.edges || null;
-  // edges: input i -> working neuron j, by what actually flowed this hour (x_i * W1_ij)
+  const inputs = s.inputs || [], E = s.edges || null;
   if (E){
     let maxE = 1e-9;
     for (let i = 0; i < 15; i++) for (let j = 0; j < N; j++) if (act[j] > 0) maxE = Math.max(maxE, Math.abs(E[i][j]));
-    const g = el("g", {}, svg);
     for (let j = 0; j < N; j++){
       if (!(act[j] > 0)) continue;
       for (let i = 0; i < 15; i++){
         const e = E[i][j], m = Math.abs(e) / maxE;
         if (m < .12) continue;
         el("line", {x1: xi(i), y1: yIn + 6, x2: x(j), y2: yH - 9, stroke: e > 0 ? C.cuso4 : C.neg,
-                    "stroke-width": (.5 + 1.8 * m).toFixed(2), "stroke-opacity": (.12 + .6 * m).toFixed(2), class: "e" + j}, g);
+                    "stroke-width": (.5 + 1.8 * m).toFixed(2), "stroke-opacity": (.12 + .6 * m).toFixed(2)}, svg);
       }
     }
   }
-  // inputs
-  inputs.forEach((inp, i) => {
+  for (let i = 0; i < 15; i++){
     el("circle", {cx: xi(i), cy: yIn, r: small ? 3 : 4.2, fill: C.steel}, svg);
-    if (!small){
+    if (!small && inputs[i]){
       el("text", {x: xi(i), y: yIn - 30, "text-anchor": "middle", "font-size": 10.5, fill: C.mid}, svg, INPUTS[i][0]);
-      el("text", {x: xi(i), y: yIn - 15, "text-anchor": "middle", "font-size": 11.5, fill: C.ink}, svg, fmtInput(i, inp.value) + (INPUTS[i][1] && i >= 4 ? " " + INPUTS[i][1] : ""));
+      el("text", {x: xi(i), y: yIn - 15, "text-anchor": "middle", "font-size": 11.5, fill: C.ink}, svg,
+         fmtInput(i, inputs[i].value) + (INPUTS[i][1] && i >= 4 ? " " + INPUTS[i][1] : ""));
     }
-  });
-  if (!inputs.length) for (let i = 0; i < 15; i++) el("circle", {cx: xi(i), cy: yIn, r: 4, fill: C.steel}, svg);
-  // neuron -> forecast: each working neuron's push, a1 * W2 (in MW)
+  }
   const pushes = ns.map(n => dead.has(n.id) ? 0 : (n.push_mw != null ? n.push_mw : n.contribution || 0));
-  const maxP = Math.max(1e-9, ...pushes.map(Math.abs));
-  const ox = W / 2;
+  const maxP = Math.max(1e-9, ...pushes.map(Math.abs)), ox = W / 2;
   for (let j = 0; j < N; j++){
     if (!(act[j] > 0)) continue;
     const m = Math.abs(pushes[j]) / maxP, up = pushes[j] >= 0;
     el("line", {x1: x(j), y1: yH + 9, x2: ox, y2: yOut - 9, stroke: up ? C.deep : C.neg, "stroke-width": (.8 + 3.2 * m).toFixed(2),
-                "stroke-opacity": (.35 + .55 * m).toFixed(2), "stroke-dasharray": up ? "" : "3 3", id: "o" + j}, svg);
+                "stroke-opacity": (.35 + .55 * m).toFixed(2), "stroke-dasharray": up ? "" : "3 3"}, svg);
   }
-  // neurons
   for (let j = 0; j < N; j++){
-    if (dead.has(j)){
-      el("path", {d: `M${x(j) - 4},${yH - 4} L${x(j) + 4},${yH + 4} M${x(j) + 4},${yH - 4} L${x(j) - 4},${yH + 4}`, stroke: C.steel, "stroke-width": 1.6}, svg);
-    } else if (act[j] > 0){
-      el("circle", {cx: x(j), cy: yH, r: (small ? 2.5 : 3.5) + (small ? 4 : 6) * Math.sqrt(act[j] / maxA), fill: C.cuso4}, svg);
-    } else {
-      el("circle", {cx: x(j), cy: yH, r: small ? 3 : 4, fill: "none", stroke: C.muted, "stroke-width": 1.1}, svg);
-    }
+    if (dead.has(j)) el("path", {d: `M${x(j) - 4},${yH - 4} L${x(j) + 4},${yH + 4} M${x(j) + 4},${yH - 4} L${x(j) - 4},${yH + 4}`, stroke: C.steel, "stroke-width": 1.6}, svg);
+    else if (act[j] > 0) el("circle", {cx: x(j), cy: yH, r: (small ? 2.5 : 3.5) + (small ? 4 : 6) * Math.sqrt(act[j] / maxA), fill: C.cuso4}, svg);
+    else el("circle", {cx: x(j), cy: yH, r: small ? 3 : 4, fill: "none", stroke: C.muted, "stroke-width": 1.1}, svg);
     el("circle", {cx: x(j), cy: yH, r: small ? 11 : 14, fill: "none", stroke: C.deep, "stroke-width": 2, opacity: 0, id: "ring" + j}, svg);
+    if (!small && (j % 5 === 0 || j === 24)) el("text", {x: x(j), y: yH + 30, "text-anchor": "middle", "font-size": 10.5, fill: C.mid}, svg, "N" + nn(j));
   }
-  el("text", {x: 2, y: yH - (small ? 20 : 24), "font-size": 10.5, fill: C.mid}, svg, "25 neurons");
-  // forecast
   el("circle", {cx: ox, cy: yOut, r: small ? 6 : 8, fill: C.deep}, svg);
   el("text", {x: ox + 16, y: yOut + 6, "font-size": small ? 19 : 22, fill: C.deep, "font-family": "Times New Roman, Tinos, Times, serif"}, svg, fmtMW(s.forecast_mw) + " MW");
   if (s.base_mw != null){
@@ -408,140 +567,6 @@ function drawNet(s){
     el("text", {x: ox, y: yOut + (small ? 30 : 32), "text-anchor": "middle", "font-size": small ? 10.5 : 12, fill: C.mid}, svg,
        fmtMW(s.base_mw) + " (bias)  " + sign + "  " + fmtMW(Math.abs(sum)) + " (" + act.filter(a => a > 0).length + " working neurons)  =  " + fmtMW(s.forecast_mw) + " MW");
   }
-}
-
-// ---------------------------------------------------------------- the cells
-function drawCells(s){
-  const svg = $("cells"); svg.innerHTML = "";
-  const W = Math.max(300, Math.round(svg.parentNode.clientWidth || 980)), small = W < 600;
-  const {L, R, cw, x} = cols(W);
-  const top = 30, stemH = small ? 70 : 96, base = top + stemH;
-  const tubeTop = base + 28, tubeH = small ? 118 : 146, H = tubeTop + tubeH + 46;
-  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
-  const defs = el("defs", {}, svg);
-  const mk = (id, a, b) => { const g = el("linearGradient", {id, x1: 0, y1: 0, x2: 0, y2: 1}, defs);
-    el("stop", {offset: "0", "stop-color": C.glass}, g); el("stop", {offset: ".07", "stop-color": C.glass}, g);
-    el("stop", {offset: ".075", "stop-color": a}, g); el("stop", {offset: "1", "stop-color": b}, g); };
-  mk("sol", C.cuso4Top, C.cuso4Bot); mk("solOn", "#8fd0ff", "#3d9be0");
-  const dead = new Set(s.dead || []);
-  const ms = Array.from({length: N}, (_, i) => dead.has(i) ? 0 : ((s.neurons || [])[i] || {}).pulse_ms || 0);
-  const copper = s.copper_ms || new Array(N).fill(0);
-  const mx = Math.max(1, ...ms);
-  const order = [...ms.keys()].sort((a, b) => ms[b] - ms[a]);
-  const lead = ms[order[0]] > 0 ? order[0] : -1;
-  const labelled = new Set(order.slice(0, small ? 1 : 3).filter(i => ms[i] > 0));
-  const cmax = Math.max(1, ...copper.filter((c, i) => !dead.has(i)));
-
-  el("line", {x1: L, x2: W - R, y1: base, y2: base, stroke: C.axis}, svg);
-  for (let i = 0; i < N; i++){
-    if (ms[i] <= 0) continue;
-    const y = base - Math.max(3, ms[i] / mx * stemH);
-    el("line", {x1: x(i), x2: x(i), y1: base, y2: y, stroke: C.steel, "stroke-width": 1.3, id: "stem" + i}, svg);
-    el("circle", {cx: x(i), cy: y, r: 2.6, fill: C.steel, id: "dot" + i}, svg);
-    if (labelled.has(i)){
-      const anchor = i < 2 ? "start" : i > N - 3 ? "end" : "middle";
-      el("text", {x: x(i), y: y - 9, "text-anchor": anchor, "font-size": 12, fill: C.ink}, svg, ms[i] + " ms");
-    }
-  }
-  const tw = Math.min(18, cw * .62);
-  for (let i = 0; i < N; i++){
-    const cx = x(i), isDead = dead.has(i);
-    el("rect", {x: cx - tw / 2, y: tubeTop, width: tw, height: tubeH, rx: tw / 2, fill: "url(#sol)", stroke: C.glassLine,
-                "stroke-width": .8, opacity: isDead ? .45 : 1, id: "tube" + i}, svg);
-    const tip = tubeTop + tubeH * .46, an = tubeTop + tubeH * .74;
-    el("line", {x1: cx, x2: cx, y1: tubeTop - 16, y2: tip, stroke: C.steel, "stroke-width": 1.6}, svg);
-    el("line", {x1: cx, x2: cx, y1: an, y2: tubeTop + tubeH + 10, stroke: C.steel, "stroke-width": 1.6}, svg);
-    if (isDead){
-      el("rect", {x: cx - tw * .22, y: tip, width: tw * .44, height: an - tip, fill: C.deposit}, svg);
-    } else if (copper[i] > 0){
-      const h = (an - tip - 4) * Math.sqrt(copper[i] / cmax), w = tw * .2 + tw * .25 * Math.sqrt(copper[i] / cmax);
-      el("path", {d: `M${cx - 1},${tip} L${cx - w},${tip + h * .45} L${cx - w * .5},${tip + h * .7} L${cx - w * .8},${tip + h}`
-                    + ` L${cx + w * .6},${tip + h * .85} L${cx + w},${tip + h * .4} L${cx + 1},${tip} Z`, fill: C.deposit}, svg);
-    }
-    const show = small ? (i % 6 === 0 || i === 24) : (i % 5 === 0 || i === 24);
-    if (show) el("text", {x: i === 0 ? cx - tw / 2 : i === N - 1 ? cx + tw / 2 : cx, y: tubeTop + tubeH + 28,
-                          "text-anchor": i === 0 ? "start" : i === N - 1 ? "end" : "middle", "font-size": 12,
-                          fill: isDead ? C.muted : C.ink, "text-decoration": isDead ? "line-through" : "none"}, svg, nn(i));
-  }
-  el("text", {x: W - R, y: 12, "text-anchor": "end", "font-size": 13, fill: C.deep, id: "nowPulse"}, svg, "");
-  el("text", {x: W - R, y: H - 2, "text-anchor": "end", "font-size": 11.5, fill: C.mid}, svg,
-     copper.some(c => c > 0) ? "copper drawn in proportion to the current each cell has received" : "no copper deposited by this record yet");
-}
-
-// the hour's pulse sequence, one cell at a time, at real speed
-let pulseTimer = null, pulseKey = "";
-function startPulses(s){
-  const dead = new Set(s.dead || []);
-  const seq = (s.neurons || []).filter(n => n.pulse_ms > 0 && !dead.has(n.id)).map(n => [n.id, n.pulse_ms]);
-  const key = s.input_hour_utc + seq.join("|");
-  if (key === pulseKey && pulseTimer) return;
-  pulseKey = key; clearTimeout(pulseTimer);
-  let k = 0;
-  const off = j => { const t = $("tube" + j), r = $("ring" + j), st = $("stem" + j), d = $("dot" + j), o = $("o" + j);
-    if (t) t.setAttribute("fill", "url(#sol)"); if (r) r.setAttribute("opacity", 0);
-    if (st) st.setAttribute("stroke", C.steel); if (d) d.setAttribute("fill", C.steel); if (o) o.removeAttribute("filter"); };
-  const on = j => { const t = $("tube" + j), r = $("ring" + j), st = $("stem" + j), d = $("dot" + j);
-    if (t) t.setAttribute("fill", "url(#solOn)"); if (r) r.setAttribute("opacity", 1);
-    if (st) st.setAttribute("stroke", C.deep); if (d) d.setAttribute("fill", C.deep); };
-  const step = () => {
-    if (!seq.length) return;
-    if (k > 0) off(seq[k - 1][0]);
-    if (k === seq.length){ k = 0; const t = $("nowPulse"); if (t) t.textContent = ""; pulseTimer = setTimeout(step, 2200); return; }
-    const [j, m] = seq[k]; on(j);
-    const t = $("nowPulse"); if (t) t.textContent = "N" + nn(j) + " · " + m + " ms";
-    k++; pulseTimer = setTimeout(step, Math.max(m, 60));
-  };
-  step();
-}
-
-// ---------------------------------------------------------------- the code, this hour
-function drawSteps(s){
-  const box = $("steps"); box.innerHTML = "";
-  const dead = new Set(s.dead || []);
-  const inp = s.inputs || [], v = i => inp[i] ? inp[i].value : null;
-  const working = (s.neurons || []).filter(n => n.activation > 0 && !dead.has(n.id)).length;
-  const pulsed = (s.neurons || []).filter(n => n.pulse_ms > 0 && !dead.has(n.id));
-  const total = pulsed.reduce((a, n) => a + n.pulse_ms, 0);
-  const made = hhmm(s.updated_utc), nextAt = plusH(s.forecast_hour_boston, 1);
-  const mins = Math.round((new Date(nextAt).getTime() - Date.now()) / 6e4);
-  const st = s.sent || {};
-  const rows = [
-    ["Wait for a complete hour of demand",
-     'load = fetch_nema_isone()   <span class="cm"># ISO-NE five-minute load, NEMA zone, hourly mean</span>',
-     fmtMW(s.observed_mw) + " MW", hhmm(s.input_hour_boston) + "–" + hhmm(s.forecast_hour_boston) + " Boston"],
-    ["Read Boston's weather for that hour",
-     'weather = fetch_recent_boston_weather()   <span class="cm"># Open-Meteo</span>',
-     inp.length ? fmtInput(4, v(4)) + " °C · " + fmtInput(5, v(5)) + " %" : "—",
-     inp.length ? "feels like " + fmtInput(6, v(6)) + " °C · rain " + fmtInput(7, v(7)) + " mm" : ""],
-    ["Make the 15 inputs, scaled as in training",
-     'X = (row[FEATURES] - x_mean) / x_std   <span class="cm"># demand ×4, weather ×4, calendar ×7</span>',
-     "15 numbers", inp.length ? "demand −1 week: " + fmtMW(v(3)) + " MW" : ""],
-    ["Run the 25 neurons",
-     'a1 = np.maximum(X @ W1 + b1, 0)\na1[:, dead] = 0   <span class="cm"># a dead cell removes its neuron</span>',
-     working + " working", (N - dead.size - working) + " silent · " + dead.size + " dead"],
-    ["Forecast the hour after",
-     'y = a1 @ W2 + b2   <span class="cm"># back to MW</span>',
-     fmtMW(s.forecast_mw) + " MW", "for " + hhmm(s.forecast_hour_boston) + "–" + hhmm(plusH(s.forecast_hour_boston, 1)) + " Boston"],
-    ["Turn each neuron's share into current",
-     'contribution = np.abs(a1 * W2[:, 0])\npulse_ms = np.rint(contribution / contribution.sum() * 1500)',
-     pulsed.length + " cells", total.toLocaleString("en-US") + " ms in total"],
-    ["Send the pulses, one cell at a time",
-     'for cell, ms in enumerate(pulse_ms): bridge.pulse(cell, ms)   <span class="cm"># Mega D22–D46 → MOSFET → cell</span>',
-     st.status === "delivered" ? "sent " + (st.utc ? hhmm(st.utc) : "") : "not sent",
-     st.status === "delivered" ? "to the copper" : st.status === "view only" ? "no copper attached" : (st.status || "")],
-    ["Wait for the next hour",
-     '<span class="cm"># checks for new data every 10 minutes</span>',
-     mins > 0 ? "in " + mins + " min" : "due now",
-     "data for " + hhmm(s.forecast_hour_boston) + "–" + hhmm(nextAt) + " complete at " + hhmm(nextAt)],
-  ];
-  rows.forEach((r, k) => {
-    const d = document.createElement("div");
-    d.className = "step " + (k < rows.length - 1 ? "done" : "now");
-    d.innerHTML = `<span class="n">${k + 1}</span><div><div class="what">${r[0]}</div><code>${r[1]}</code></div>` +
-                  `<div class="val">${r[2]}<small>${r[3]}</small></div>`;
-    box.appendChild(d);
-  });
-  $("cycleSub").textContent = "This cycle ran at " + made + " Boston on " + day(s.updated_utc) + ". Every step below ran with the numbers shown; the weights W1, b1, W2, b2 have been fixed since 22 September 2026.";
 }
 
 // ---------------------------------------------------------------- charts
@@ -562,10 +587,7 @@ function yAxis(svg, f, lo, hi, y){
 function range(vals){ const lo = Math.min(...vals), hi = Math.max(...vals), pad = (hi - lo) * .12 || 50; return [lo - pad, hi + pad]; }
 function drawChart(h){
   const svg = $("chart"), f = frame(svg);
-  if (h.length < 2){
-    el("text", {x: f.W / 2, y: f.H / 2, "text-anchor": "middle", fill: C.mid, "font-size": 13}, svg, "The 72-hour record fills in hour by hour.");
-    return;
-  }
+  if (h.length < 2){ el("text", {x: f.W / 2, y: f.H / 2, "text-anchor": "middle", fill: C.mid, "font-size": 13}, svg, "The 72-hour record fills in hour by hour."); return; }
   const pts = h.map(r => ({t: new Date(r.t).getTime(), o: r.observed, f: r.forecast}));
   const t0 = pts[0].t, t1 = pts[pts.length - 1].t + HOUR;
   const [lo, hi] = range(pts.flatMap(p => [p.o, p.f]));
@@ -577,8 +599,7 @@ function drawChart(h){
     const hr = Number(bost(new Date(t).toISOString(), {hour: "numeric", hourCycle: "h23"}));
     if (hr % every === 0 && t >= t0){
       el("line", {x1: x(t), x2: x(t), y1: f.H - f.B, y2: f.H - f.B + 4, stroke: C.axis}, svg);
-      el("text", {x: x(t), y: f.H - 10, "text-anchor": "middle", "font-size": 11, fill: C.mid}, svg,
-         bost(new Date(t).toISOString(), {weekday: "short"}) + " " + nn(hr) + ":00");
+      el("text", {x: x(t), y: f.H - 10, "text-anchor": "middle", "font-size": 11, fill: C.mid}, svg, bost(new Date(t).toISOString(), {weekday: "short"}) + " " + nn(hr) + ":00");
     }
   }
   el("line", {x1: f.L, x2: f.W - f.R, y1: f.H - f.B, y2: f.H - f.B, stroke: C.axis}, svg);
@@ -656,14 +677,17 @@ async function tick(){
     if (!r.ok) throw new Error(r.status);
     const s = await r.json();
     if (!S || s.updated_utc !== S.updated_utc || s.input_hour_utc !== S.input_hour_utc) render(s);
-    else if (s.has_forecast){ pill(s); drawSteps(s); }
+    else if (s.has_forecast) pill(s);
   } catch (e) {
     setPill("offline", "Offline");
     $("src").textContent = "cannot reach the server";
   }
 }
-let rsz; window.addEventListener("resize", () => { clearTimeout(rsz); rsz = setTimeout(() => {
-  if (S){ pulseKey = ""; render(S); }
+let rsz, lastW = window.innerWidth;
+window.addEventListener("resize", () => { clearTimeout(rsz); rsz = setTimeout(() => {
+  if (window.innerWidth === lastW) return;
+  lastW = window.innerWidth;
+  if (S){ cyc.key = ""; render(S); }
   if (lastRecord) drawRecord(lastRecord);
 }, 150); });
 tick(); loadRecord();

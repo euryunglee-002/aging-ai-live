@@ -158,6 +158,14 @@ def main():
     st["history"] = [hist[k] for k in sorted(hist)
                      if newest - _t(k) <= timedelta(hours=HISTORY_HOURS - 1)]
     st["copper_ms"] = [0] * R.B.HIDDEN          # no copper attached
+    # Pulse time each cell would have received since the site went live (nothing is deposited).
+    ms = [int(n["pulse_ms"]) for n in st["neurons"]]
+    if "pulse_total_ms" not in old:
+        st["pulse_total_ms"], st["pulse_total_since"] = ms, st["input_hour_utc"]
+    else:
+        new_hour = old.get("input_hour_utc") != st["input_hour_utc"]
+        st["pulse_total_ms"] = [a + (b if new_hour else 0) for a, b in zip(old["pulse_total_ms"], ms)]
+        st["pulse_total_since"] = old.get("pulse_total_since") or st["input_hour_utc"]
     st["mode"] = "standalone"
     st["publisher"] = "cloud"
     st["has_forecast"] = True
