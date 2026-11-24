@@ -1,22 +1,22 @@
 {
- "updated_utc": "2026-11-24T07:29:45.759704+00:00",
+ "updated_utc": "2026-11-24T08:46:20.384561+00:00",
  "error": null,
  "source": "ISO-NE",
- "input_hour_utc": "2026-11-24T06:00:00+00:00",
- "input_hour_boston": "2026-11-24T01:00:00-05:00",
- "forecast_hour_boston": "2026-11-24T02:00:00-05:00",
- "age_hours": 1.5,
- "observed_mw": 2095.0,
- "forecast_mw": 2574.2,
+ "input_hour_utc": "2026-11-24T07:00:00+00:00",
+ "input_hour_boston": "2026-11-24T02:00:00-05:00",
+ "forecast_hour_boston": "2026-11-24T03:00:00-05:00",
+ "age_hours": 1.77,
+ "observed_mw": 2075.4,
+ "forecast_mw": 2465.7,
  "alive": 25,
  "dead": [],
  "neurons": [
   {
    "id": 0,
-   "activation": 4.1414,
-   "contribution": 2.8797,
-   "share": 0.2985,
-   "pulse_ms": 448
+   "activation": 4.0743,
+   "contribution": 2.8331,
+   "share": 0.291,
+   "pulse_ms": 437
   },
   {
    "id": 1,
@@ -27,10 +27,10 @@
   },
   {
    "id": 2,
-   "activation": 5.2349,
-   "contribution": 1.706,
-   "share": 0.1768,
-   "pulse_ms": 265
+   "activation": 5.3553,
+   "contribution": 1.7452,
+   "share": 0.1793,
+   "pulse_ms": 269
   },
   {
    "id": 3,
@@ -41,10 +41,10 @@
   },
   {
    "id": 4,
-   "activation": 1.5887,
-   "contribution": 0.3891,
-   "share": 0.0403,
-   "pulse_ms": 60
+   "activation": 1.47,
+   "contribution": 0.36,
+   "share": 0.037,
+   "pulse_ms": 55
   },
   {
    "id": 5,
@@ -55,10 +55,10 @@
   },
   {
    "id": 6,
-   "activation": 2.0127,
-   "contribution": 0.589,
-   "share": 0.0611,
-   "pulse_ms": 92
+   "activation": 2.2907,
+   "contribution": 0.6704,
+   "share": 0.0689,
+   "pulse_ms": 103
   },
   {
    "id": 7,
@@ -76,10 +76,10 @@
   },
   {
    "id": 9,
-   "activation": 5.3954,
-   "contribution": 1.2915,
-   "share": 0.1339,
-   "pulse_ms": 201
+   "activation": 5.7942,
+   "contribution": 1.387,
+   "share": 0.1425,
+   "pulse_ms": 214
   },
   {
    "id": 10,
@@ -97,24 +97,24 @@
   },
   {
    "id": 12,
-   "activation": 0.482,
-   "contribution": 0.0584,
-   "share": 0.0061,
-   "pulse_ms": 9
+   "activation": 0.2319,
+   "contribution": 0.0281,
+   "share": 0.0029,
+   "pulse_ms": 4
   },
   {
    "id": 13,
-   "activation": 3.0204,
-   "contribution": 0.4478,
-   "share": 0.0464,
-   "pulse_ms": 70
+   "activation": 2.6485,
+   "contribution": 0.3927,
+   "share": 0.0403,
+   "pulse_ms": 60
   },
   {
    "id": 14,
-   "activation": 0.1659,
-   "contribution": 0.046,
-   "share": 0.0048,
-   "pulse_ms": 7
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
   },
   {
    "id": 15,
@@ -132,10 +132,10 @@
   },
   {
    "id": 17,
-   "activation": 0.3459,
-   "contribution": 0.0643,
-   "share": 0.0067,
-   "pulse_ms": 10
+   "activation": 0.8131,
+   "contribution": 0.1512,
+   "share": 0.0155,
+   "pulse_ms": 23
   },
   {
    "id": 18,
@@ -146,10 +146,10 @@
   },
   {
    "id": 19,
-   "activation": 1.5891,
-   "contribution": 0.1453,
-   "share": 0.0151,
-   "pulse_ms": 23
+   "activation": 1.5138,
+   "contribution": 0.1384,
+   "share": 0.0142,
+   "pulse_ms": 21
   },
   {
    "id": 20,
@@ -167,10 +167,10 @@
   },
   {
    "id": 22,
-   "activation": 3.4805,
-   "contribution": 0.3965,
-   "share": 0.0411,
-   "pulse_ms": 62
+   "activation": 3.3528,
+   "contribution": 0.382,
+   "share": 0.0392,
+   "pulse_ms": 59
   },
   {
    "id": 23,
@@ -181,9 +181,9 @@
   },
   {
    "id": 24,
-   "activation": 6.82,
-   "contribution": 1.6341,
-   "share": 0.1694,
+   "activation": 6.8767,
+   "contribution": 1.6477,
+   "share": 0.1692,
    "pulse_ms": 254
   }
  ],
@@ -201,6 +201,12 @@
    "t": "2026-11-24T06:00:00+00:00",
    "observed": 2095.0,
    "forecast": 2574.2,
+   "alive": 25
+  },
+  {
+   "t": "2026-11-24T07:00:00+00:00",
+   "observed": 2075.4,
+   "forecast": 2465.7,
    "alive": 25
   }
  ],
