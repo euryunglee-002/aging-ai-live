@@ -15,6 +15,7 @@ and Boston weather of each past hour, run through the same frozen weights
 (as replay_fast in AGING_FINAL.py does). They are marked live = 0.
 """
 import json
+import os
 import re
 import shutil
 import time
@@ -149,7 +150,12 @@ def main():
         return
 
     R.write_status(p, sent={"status": "view only"})
+    R.print_result(p)                           # the same table the display shows, kept in this run's log
     st = json.loads(R.STATUS_PATH.read_text())
+    if os.environ.get("GITHUB_RUN_ID"):         # where anyone can check this run's log
+        rid = os.environ["GITHUB_RUN_ID"]
+        st["run"] = {"id": int(rid), "url": f"{os.environ.get('GITHUB_SERVER_URL', 'https://github.com')}/"
+                                            f"{os.environ.get('GITHUB_REPOSITORY', '')}/actions/runs/{rid}"}
 
     hist = {h["t"]: h for h in old.get("history", []) if "t" in h}
     hist[st["input_hour_utc"]] = {"t": st["input_hour_utc"], "observed": st["observed_mw"],

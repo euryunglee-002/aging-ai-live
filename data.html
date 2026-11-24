@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
+<title>Aging AI — forecast data</title>
+<style>
+  :root{--bg:#0e0e0f; --ink:#e4e5e6; --ink2:#b3b5b8; --mid:#86888c; --muted:#5d5f63; --rule:#2c2d30; --cuso4:#4aa8ea; --deep:#8c98ff;
+        --mono:Menlo,Consolas,"DejaVu Sans Mono",monospace}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink2);font:14px/1.6 var(--mono);-webkit-font-smoothing:antialiased}
+  .wrap{max-width:980px;margin:0 auto;padding:36px 24px 60px}
+  a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--muted);text-underline-offset:3px}
+  a:hover{text-decoration-color:var(--ink)}
+  h1{font:15px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin:0 0 28px;padding-bottom:12px;border-bottom:1px solid var(--rule);
+     display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  h1 span:last-child{color:var(--mid);letter-spacing:.04em;text-transform:none}
+  h2{font:13px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin:36px 0 10px;font-weight:400}
+  dl{display:grid;grid-template-columns:230px minmax(0,1fr);gap:4px 18px;margin:0}
+  dt{color:var(--mid)} dd{margin:0;color:var(--ink)}
+  dd.deep{color:var(--deep)}
+  table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+  th,td{text-align:right;padding:3px 10px;border-bottom:1px solid var(--rule);white-space:nowrap}
+  th{color:var(--mid);font-weight:400}
+  th:first-child,td:first-child{text-align:left;padding-left:0}
+  td{color:var(--ink)}
+  tr.off td{color:var(--muted)}
+  td.p{color:var(--deep)}
+  .scroll{overflow-x:auto}
+  .note{color:var(--mid);margin-top:10px}
+  @media (max-width:640px){ dl{grid-template-columns:1fr} dt{margin-top:8px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1><span>Aging AI · forecast data</span><span><a href="./">back to the display</a></span></h1>
+
+  <dl id="run"></dl>
+
+  <h2>15 inputs</h2>
+  <div class="scroll"><table id="inputs"></table></div>
+
+  <h2>25 neurons → 25 cells</h2>
+  <div class="scroll"><table id="cells"></table></div>
+  <p class="note" id="sum"></p>
+
+  <h2>Records</h2>
+  <dl id="links"></dl>
+</div>
+<script>
+const TZ = "America/New_York", HOUR = 3.6e6;
+const $ = id => document.getElementById(id);
+const bost = (iso, o) => new Intl.DateTimeFormat("en-CA", Object.assign({timeZone: TZ}, o)).format(new Date(iso));
+const stamp = iso => bost(iso, {year: "numeric", month: "2-digit", day: "2-digit"}) + " " + bost(iso, {hour: "2-digit", minute: "2-digit", hourCycle: "h23"});
+const hm = iso => bost(iso, {hour: "2-digit", minute: "2-digit", hourCycle: "h23"});
+const utc = iso => new Date(iso).toISOString().slice(0, 16).replace("T", " ") + " UTC";
+const plusH = (iso, h) => new Date(new Date(iso).getTime() + h * HOUR).toISOString();
+const mw = v => v.toLocaleString("en-US", {minimumFractionDigits: 1, maximumFractionDigits: 1}) + " MW";
+const nn = i => String(i).padStart(2, "0");
+const esc = t => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+const NAMES = {demand_now: "NEMA demand, input hour (MW)", demand_lag_1h: "demand 1 h before (MW)", demand_lag_24h: "demand 24 h before (MW)",
+  demand_lag_168h: "demand 1 week before (MW)", temperature_2m: "temperature (°C)", relative_humidity_2m: "relative humidity (%)",
+  apparent_temperature: "apparent temperature (°C)", precipitation: "precipitation (mm)", hour_sin: "hour of day, sin", hour_cos: "hour of day, cos",
+  dow_sin: "day of week, sin", dow_cos: "day of week, cos", year_sin: "day of year, sin", year_cos: "day of year, cos", weekend: "weekend (1 = yes)"};
+const dl = (id, rows) => { $(id).innerHTML = rows.filter(Boolean).map(([k, v, cls]) => `<dt>${k}</dt><dd class="${cls || ""}">${v}</dd>`).join(""); };
+
+async function load(){
+  let r = await fetch("status.json?t=" + Date.now(), {cache: "no-store"});
+  if (!r.ok) r = await fetch("/api/status", {cache: "no-store"});          // on the Raspberry Pi
+  const s = await r.json();
+  if (!s.has_forecast){ $("run").innerHTML = "<dt>status</dt><dd>no forecast yet</dd>"; return; }
+  const dead = new Set(s.dead || []), ns = s.neurons || [];
+  const working = ns.filter(n => n.activation > 0 && !dead.has(n.id)).length;
+  const total = ns.reduce((a, n) => a + (dead.has(n.id) ? 0 : n.pulse_ms), 0);
+  dl("run", [
+    ["run", `${stamp(s.updated_utc)} Boston (${utc(s.updated_utc)})`],
+    s.run ? ["execution log", `<a href="${esc(s.run.url)}">GitHub Actions run ${s.run.id}</a>`] : null,
+    ["data source", "ISO New England, NEMA zone 4008, five-minute estimated load, hourly mean · Open-Meteo, Boston"],
+    ["input hour", `${hm(s.input_hour_boston)}–${hm(s.forecast_hour_boston)} Boston (${utc(s.input_hour_utc)})`],
+    ["observed demand", mw(s.observed_mw)],
+    ["forecast", `${mw(s.forecast_mw)} for ${hm(s.forecast_hour_boston)}–${hm(plusH(s.forecast_hour_boston, 1))} Boston`, "deep"],
+    s.base_mw != null ? ["forecast = bias + neurons", `${mw(s.base_mw)} ${s.forecast_mw >= s.base_mw ? "+" : "−"} ${mw(Math.abs(s.forecast_mw - s.base_mw))}`] : null,
+    ["neurons", `${25 - dead.size} alive · ${working} active · ${dead.size} dead`],
+    ["pulse budget", `${total.toLocaleString("en-US")} ms over ${ns.filter(n => n.pulse_ms > 0 && !dead.has(n.id)).length} cells`],
+    ["copper", (s.sent || {}).status === "delivered" ? "pulses delivered" : "not connected; pulses calculated, not sent"],
+  ]);
+  const inp = s.inputs || [];
+  $("inputs").innerHTML = "<tr><th>input</th><th>value</th><th>scaled</th></tr>" +
+    inp.map(i => `<tr><td>${NAMES[i.name] || i.name}</td><td>${i.value}</td><td>${i.z}</td></tr>`).join("");
+  $("cells").innerHTML = "<tr><th>cell</th><th>activation</th><th>output weight × activation (MW)</th><th>contribution</th><th>share</th><th>pulse</th></tr>" +
+    ns.map(n => `<tr class="${n.pulse_ms > 0 && !dead.has(n.id) ? "" : "off"}"><td>N${nn(n.id)}${dead.has(n.id) ? " dead" : ""}</td>` +
+      `<td>${n.activation.toFixed(4)}</td><td>${n.push_mw != null ? n.push_mw.toFixed(1) : ""}</td><td>${n.contribution.toFixed(4)}</td>` +
+      `<td>${(n.share * 100).toFixed(2)}%</td><td class="${n.pulse_ms > 0 ? "p" : ""}">${n.pulse_ms} ms</td></tr>`).join("");
+  $("sum").textContent = `pulse = round(contribution / sum of contributions × 1,500 ms); contribution = |activation × output weight|. ` +
+    `The Arduino Mega runs the cells one at a time, N00 to N24.`;
+  const repo = "https://github.com/euryunglee-002/aging-ai-live";
+  dl("links", [
+    ["this run, raw", `<a href="status.json">status.json</a>`],
+    ["every run", `<a href="${repo}/commits/main/status.json">one commit per hourly forecast</a>`],
+    ["every hour since training", `<a href="record.json">record.json</a> (from 2026-09-22; hours before 2026-11-24 replayed with the same weights)`],
+    ["code", `<a href="${repo}/blob/main/aging_ai_boston.py">aging_ai_boston.py</a> · <a href="${repo}/blob/main/boston_rpi.py">boston_rpi.py</a> · <a href="${repo}/blob/main/cloud_forecast.py">cloud_forecast.py</a>`],
+    ["weights", `<a href="${repo}/blob/main/aging_ai_boston_model.npz">aging_ai_boston_model.npz</a> (saved 2026-09-22, unchanged)`],
+  ]);
+}
+load();
+</script>
+</body>
+</html>

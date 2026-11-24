@@ -21,7 +21,8 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;overflow:hidden}
-  body{background:#000;color:var(--ink);font:16px/1.4 var(--sans);-webkit-font-smoothing:antialiased;cursor:none}
+  body{background:#000;color:var(--ink);font:16px/1.4 var(--sans);-webkit-font-smoothing:antialiased}
+  body.idle, body.idle *{cursor:none}
   svg text{font-family:var(--mono)}
   #stage{position:fixed;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--bg)}
   .mono{font-family:var(--mono)}
@@ -46,7 +47,9 @@
   .num.deep{color:var(--deep)}
   .lab{font:14px/1.5 var(--mono);color:var(--mid);margin-top:8px}
 
-  #replay{position:absolute;left:960px;right:56px;top:240px;font:14px var(--mono);color:var(--mid);border-top:1px solid var(--rule);padding-top:12px}
+  #replay{position:absolute;left:960px;right:56px;top:240px;font:14px var(--mono);color:var(--mid);border-top:1px solid var(--rule);padding-top:12px;display:flex;justify-content:space-between}
+  #replay a{color:var(--ink2);text-decoration:underline;text-decoration-color:var(--muted);text-underline-offset:3px}
+  #replay a:hover{color:var(--ink);text-decoration-color:var(--ink)}
   #term{position:absolute;left:960px;right:56px;top:276px;height:516px;overflow:hidden;font:14.5px/21px var(--mono);color:var(--ink2);
         padding-top:4px;white-space:pre}
   #term div{height:21px;overflow:hidden;text-overflow:ellipsis}
@@ -85,7 +88,7 @@
     <div><div class="num deep" id="fc">—</div><div class="lab" id="fcT">forecast</div></div>
   </div>
 
-  <div id="replay"></div>
+  <div id="replay"><span id="replayT"></span><a href="data.html" id="dataLink">View forecast data</a></div>
   <div id="term"></div>
 
   <div class="panel-lab"><span id="panelTitle"></span><span id="panelNote"></span></div>
@@ -237,7 +240,7 @@ function play(s){
   const key = s.updated_utc + "|" + s.input_hour_utc;
   if (key === player.key && player.timer) return;
   player.key = key; clearTimeout(player.timer);
-  $("replay").textContent = `Replaying the ${hhmm(s.updated_utc)} forecast · Boston time`;
+  $("replayT").textContent = `Replaying the ${hhmm(s.updated_utc)} forecast · Boston time`;
   const L = lines(s), term = $("term");
   let k = 0;
   const reset = () => {                       // every cycle starts with the hour's circles empty
@@ -357,6 +360,9 @@ function fit(){
   $("stage").style.transform = `translate(${(innerWidth - 1920 * k) / 2}px, ${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
 }
 addEventListener("resize", fit); fit();
+// the pointer disappears after 3 s without movement, so the screen can run in a gallery
+let idleT; const wake = () => { document.body.classList.remove("idle"); clearTimeout(idleT); idleT = setTimeout(() => document.body.classList.add("idle"), 3000); };
+addEventListener("mousemove", wake); wake();
 setInterval(() => { $("clock").textContent = "Boston " + bost(new Date().toISOString(), {hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"}); if (S) state(S); }, 1000);
 let pi = -1;
 function rotate(){
