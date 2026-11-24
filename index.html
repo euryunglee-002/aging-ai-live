@@ -182,7 +182,7 @@
 
     <div class="live-grid">
       <div>
-        <div class="panel-title"><span>The 25 cells · seen from above</span><span id="nowCell"></span></div>
+        <div class="panel-title"><span>The 25 cells</span><span id="nowCell"></span></div>
         <svg id="body" role="img" aria-label="the 25 cells as a 5 by 5 grid"></svg>
         <p class="fine" id="bodyNote"></p>
       </div>
@@ -351,40 +351,36 @@ function cellTotals(s){
 function drawBody(s){
   const svg = $("body"); svg.innerHTML = "";
   const W = Math.max(280, Math.round(svg.parentNode.clientWidth || 460));
-  const gap = W < 420 ? 5 : 9, tw = (W - gap * 4) / 5, H = tw * 5 + gap * 4, small = tw < 70;
+  const cell = W / 5, small = cell < 80, R = cell * (small ? .34 : .33), labH = small ? 26 : 30, rowH = cell * .86 + labH;
+  const H = rowH * 5;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
-  const defs = el("defs", {}, svg);
-  const pool = (id, a, b, c) => { const g = el("radialGradient", {id, cx: "50%", cy: "45%", r: "55%"}, defs);
-    el("stop", {offset: "0", "stop-color": a}, g); el("stop", {offset: ".7", "stop-color": b}, g); el("stop", {offset: "1", "stop-color": c}, g); };
-  pool("pool", "#86c6ee", "#3f9bd8", "#2a7fbf"); pool("poolOn", "#d2ecff", "#7cc4f4", "#4aa8ea");
   const dead = new Set(s.dead || []), ns = s.neurons || [];
   const {real, tot} = cellTotals(s);
   for (let i = 0; i < N; i++){
-    const g = el("g", {transform: `translate(${(i % 5) * (tw + gap)},${Math.floor(i / 5) * (tw + gap)})`}, svg);
+    const cx = (i % 5 + .5) * cell, cy = Math.floor(i / 5) * rowH + R + 6;
     const isDead = dead.has(i), ms = isDead ? 0 : (ns[i] || {}).pulse_ms || 0;
-    el("rect", {x: 0, y: 0, width: tw, height: tw, fill: "rgba(255,255,255,.45)", stroke: "rgba(20,22,24,.14)", id: "frame" + i}, g);
-    const cx = tw / 2, cy = tw / 2 + (small ? 3 : 4), R = tw * (small ? .3 : .32), Rin = R * .9;
-    el("circle", {cx, cy, r: R, fill: "url(#pool)", stroke: C.glassLine, "stroke-width": 1.2, id: "pool" + i, opacity: isDead ? .55 : 1}, g);
-    el("circle", {cx, cy, r: R, fill: "none", stroke: C.deep, "stroke-width": 2, opacity: 0, class: "rip", id: "rip" + i}, g);
-    // copper so far: disk area grows with the current the cell has received
-    const f = isDead ? 1 : Math.min(1, (tot[i] || 0) / FULL_GAP_MS);
-    el("circle", {cx, cy, r: (Rin * Math.sqrt(f)).toFixed(2), class: "rip", id: "cu" + i,
-                  fill: real || isDead ? C.deposit : "rgba(19,38,58,.24)", stroke: real || isDead ? "none" : C.deposit,
-                  "stroke-width": 1, "stroke-dasharray": real || isDead ? "" : "2 2"}, g);
-    el("circle", {cx, cy, r: small ? 1.6 : 2.2, fill: C.steel}, g);          // the cathode, seen from above
-    if (isDead) el("path", {d: `M${cx - R * .35},${cy - R * .35} L${cx + R * .35},${cy + R * .35} M${cx + R * .35},${cy - R * .35} L${cx - R * .35},${cy + R * .35}`, stroke: "#fff", "stroke-width": 1.6}, g);
-    el("text", {x: small ? 4 : 6, y: 13, "font-size": small ? 9.5 : 11, fill: isDead ? C.muted : C.ink, "font-family": "Menlo, Consolas, monospace",
-                "text-decoration": isDead ? "line-through" : "none"}, g, "N" + nn(i));
-    el("text", {x: tw - 5, y: 13, "text-anchor": "end", "font-size": small ? 9.5 : 11, fill: ms > 0 ? C.deep : C.muted}, g,
-       isDead ? (small ? "×" : "dead") : ms > 0 ? ms + (small ? "" : " ms") : "0");
-    el("text", {x: tw - 5, y: tw - 5, "text-anchor": "end", "font-size": small ? 9 : 10, fill: C.mid}, g, tot[i] ? sec(tot[i]) : "");
+    const g = el("g", {}, svg);
+    el("title", {}, g, "N" + nn(i) + (isDead ? " · dead" : " · this hour " + ms + " ms · so far " + (tot[i] ? sec(tot[i]) : "0 ms")));
+    // the cell
+    el("circle", {cx, cy, r: R, fill: isDead ? C.deposit : "rgba(255,255,255,.4)", stroke: isDead ? C.deposit : "#b4b7ba", "stroke-width": 1, id: "frame" + i}, g);
+    if (!isDead){
+      // this hour's pulse: area in proportion to its share of the 1,500 ms budget
+      el("circle", {cx, cy, r: (R * Math.sqrt(ms / 1500)).toFixed(2), fill: C.cuso4, "fill-opacity": .85, class: "rip", id: "hr" + i}, g);
+      // current received so far: area grows with time (100 s fills the circle on this display)
+      el("circle", {cx, cy, r: (R * Math.sqrt(Math.min(1, (tot[i] || 0) / FULL_GAP_MS))).toFixed(2), class: "rip", id: "cu" + i,
+                    fill: real ? C.deposit : "rgba(19,38,58,.28)", stroke: real ? "none" : C.deposit, "stroke-width": 1, "stroke-dasharray": real ? "" : "2 2"}, g);
+      el("circle", {cx, cy, r: R, fill: "none", stroke: C.deep, "stroke-width": 1.6, opacity: 0, class: "rip", id: "rip" + i}, g);
+    }
+    el("text", {x: cx, y: cy + R + (small ? 13 : 15), "text-anchor": "middle", "font-size": small ? 9.5 : 10.5, fill: isDead ? C.muted : C.ink,
+                "font-family": "Menlo, Consolas, monospace", "text-decoration": isDead ? "line-through" : "none"}, g, "N" + nn(i));
+    el("text", {x: cx, y: cy + R + (small ? 24 : 28), "text-anchor": "middle", "font-size": small ? 9.5 : 10.5, fill: ms > 0 ? C.deep : C.muted}, g,
+       isDead ? "dead" : ms > 0 ? ms + " ms" : "0");
   }
   const since = s.pulse_total_since ? day(s.pulse_total_since) : "";
-  $("bodyNote").textContent = (real
-    ? "Seen from above. Dark disk: copper each cell has received so far (area grows with current; 100 s fills the tube on this display). "
-    : "Seen from above. Dotted disk: pulse time each cell would have received" + (since ? " since " + since : "") +
-      " (area grows with time; 100 s fills the tube on this display). No copper is attached, so nothing has been deposited. ") +
-    "Top right: this hour's pulse. Lit: the cell the code is pulsing now.";
+  $("bodyNote").textContent = "Blue: this hour's pulse, its area in proportion to the cell's share of 1,500 ms. " + (real
+    ? "Dark: current the cell has received so far (100 s fills the circle). "
+    : "Dotted: pulse time the cell would have received" + (since ? " since " + since : "") + " (100 s fills the circle); no copper is attached, so nothing has been deposited. ") +
+    "A cell grows and a ring spreads while the code pulses it.";
 }
 
 // side view, below: the same 25 cells as cylinders, with this hour's pulse above each
@@ -513,25 +509,23 @@ function startCycle(s){
                     $("nowLine").textContent = "line " + (i + 1); };
   const {tot} = cellTotals(s);
   const lit = (j, yes, ms) => {
-    const pool = $("pool" + j), fr = $("frame" + j), rip = $("rip" + j), cu = $("cu" + j);
+    const fr = $("frame" + j), rip = $("rip" + j), hr = $("hr" + j), cu = $("cu" + j);
     const tube = $("tube" + j), stem = $("stem" + j), dot = $("dot" + j), ring = $("ring" + j);
-    if (pool) pool.setAttribute("fill", yes ? "url(#poolOn)" : "url(#pool)");
-    if (fr){ fr.setAttribute("stroke", yes ? C.deep : "rgba(20,22,24,.14)"); fr.setAttribute("stroke-width", yes ? 2 : 1); }
+    if (fr){ fr.setAttribute("stroke", yes ? C.deep : "#b4b7ba"); fr.setAttribute("stroke-width", yes ? 2 : 1); }
     if (tube) tube.setAttribute("fill", yes ? "url(#solOn)" : "url(#sol)");
     if (stem) stem.setAttribute("stroke", yes ? C.deep : C.steel);
     if (dot) dot.setAttribute("fill", yes ? C.deep : C.steel);
     if (ring) ring.setAttribute("opacity", yes ? 1 : 0);
-    if (yes && rip){                                   // a ring spreading out while the current runs
-      rip.style.transition = "none"; rip.style.transform = "scale(.35)"; rip.style.opacity = "1";
-      rip.getBoundingClientRect();
-      rip.style.transition = `transform ${ms}ms ease-out, opacity ${ms}ms ease-in`;
-      rip.style.transform = "scale(1.28)"; rip.style.opacity = "0";
-    }
-    if (yes && cu && tot[j] > 0){                      // the copper disk grows by this hour's pulse
-      const before = Math.sqrt(Math.max(0, tot[j] - ms) / tot[j]);
-      cu.style.transition = "none"; cu.style.transform = `scale(${before})`;
-      cu.getBoundingClientRect();
-      cu.style.transition = `transform ${ms}ms linear`; cu.style.transform = "scale(1)";
+    if (!yes) return;
+    const grow = (e, from, dur, ease) => { if (!e) return;
+      e.style.transition = "none"; e.style.transform = `scale(${from})`; e.getBoundingClientRect();
+      e.style.transition = `transform ${dur}ms ${ease}`; e.style.transform = "scale(1)"; };
+    grow(hr, 0, Math.max(ms, 260), "ease-out");                       // this hour's circle grows from nothing
+    if (tot[j] > 0) grow(cu, Math.sqrt(Math.max(0, tot[j] - ms) / tot[j]), ms, "linear");   // and adds to what is there
+    if (rip){
+      rip.style.transition = "none"; rip.style.transform = "scale(.3)"; rip.style.opacity = "1"; rip.getBoundingClientRect();
+      rip.style.transition = `transform ${Math.max(ms, 260)}ms ease-out, opacity ${Math.max(ms, 260)}ms ease-in`;
+      rip.style.transform = "scale(1.18)"; rip.style.opacity = "0";
     }
   };
   clear(); $("log").innerHTML = "";
