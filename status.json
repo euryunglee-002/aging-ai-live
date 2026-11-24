@@ -1,22 +1,22 @@
 {
- "updated_utc": "2026-11-24T09:12:20.536680+00:00",
- "error": "HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=60)",
+ "updated_utc": "2026-11-24T09:15:27.480319+00:00",
+ "error": null,
  "source": "ISO-NE",
- "input_hour_utc": "2026-11-24T07:00:00+00:00",
- "input_hour_boston": "2026-11-24T02:00:00-05:00",
- "forecast_hour_boston": "2026-11-24T03:00:00-05:00",
- "age_hours": 1.77,
- "observed_mw": 2075.4,
- "forecast_mw": 2465.7,
+ "input_hour_utc": "2026-11-24T08:00:00+00:00",
+ "input_hour_boston": "2026-11-24T03:00:00-05:00",
+ "forecast_hour_boston": "2026-11-24T04:00:00-05:00",
+ "age_hours": 1.26,
+ "observed_mw": 2079.6,
+ "forecast_mw": 2546.4,
  "alive": 25,
  "dead": [],
  "neurons": [
   {
    "id": 0,
-   "activation": 4.0743,
-   "contribution": 2.8331,
-   "share": 0.291,
-   "pulse_ms": 437
+   "activation": 4.2538,
+   "contribution": 2.9579,
+   "share": 0.3012,
+   "pulse_ms": 452
   },
   {
    "id": 1,
@@ -27,10 +27,10 @@
   },
   {
    "id": 2,
-   "activation": 5.3553,
-   "contribution": 1.7452,
-   "share": 0.1793,
-   "pulse_ms": 269
+   "activation": 5.1438,
+   "contribution": 1.6763,
+   "share": 0.1707,
+   "pulse_ms": 256
   },
   {
    "id": 3,
@@ -41,10 +41,10 @@
   },
   {
    "id": 4,
-   "activation": 1.47,
-   "contribution": 0.36,
-   "share": 0.037,
-   "pulse_ms": 55
+   "activation": 1.353,
+   "contribution": 0.3314,
+   "share": 0.0337,
+   "pulse_ms": 51
   },
   {
    "id": 5,
@@ -55,10 +55,10 @@
   },
   {
    "id": 6,
-   "activation": 2.2907,
-   "contribution": 0.6704,
-   "share": 0.0689,
-   "pulse_ms": 103
+   "activation": 2.1385,
+   "contribution": 0.6258,
+   "share": 0.0637,
+   "pulse_ms": 96
   },
   {
    "id": 7,
@@ -76,10 +76,10 @@
   },
   {
    "id": 9,
-   "activation": 5.7942,
-   "contribution": 1.387,
-   "share": 0.1425,
-   "pulse_ms": 214
+   "activation": 5.7972,
+   "contribution": 1.3877,
+   "share": 0.1413,
+   "pulse_ms": 212
   },
   {
    "id": 10,
@@ -97,24 +97,24 @@
   },
   {
    "id": 12,
-   "activation": 0.2319,
-   "contribution": 0.0281,
-   "share": 0.0029,
-   "pulse_ms": 4
+   "activation": 0.398,
+   "contribution": 0.0482,
+   "share": 0.0049,
+   "pulse_ms": 7
   },
   {
    "id": 13,
-   "activation": 2.6485,
-   "contribution": 0.3927,
-   "share": 0.0403,
-   "pulse_ms": 60
+   "activation": 3.2607,
+   "contribution": 0.4834,
+   "share": 0.0492,
+   "pulse_ms": 74
   },
   {
    "id": 14,
-   "activation": 0.0,
-   "contribution": 0.0,
-   "share": 0.0,
-   "pulse_ms": 0
+   "activation": 0.0575,
+   "contribution": 0.016,
+   "share": 0.0016,
+   "pulse_ms": 2
   },
   {
    "id": 15,
@@ -132,10 +132,10 @@
   },
   {
    "id": 17,
-   "activation": 0.8131,
-   "contribution": 0.1512,
-   "share": 0.0155,
-   "pulse_ms": 23
+   "activation": 0.7591,
+   "contribution": 0.1411,
+   "share": 0.0144,
+   "pulse_ms": 22
   },
   {
    "id": 18,
@@ -146,10 +146,10 @@
   },
   {
    "id": 19,
-   "activation": 1.5138,
-   "contribution": 0.1384,
-   "share": 0.0142,
-   "pulse_ms": 21
+   "activation": 0.9724,
+   "contribution": 0.0889,
+   "share": 0.0091,
+   "pulse_ms": 14
   },
   {
    "id": 20,
@@ -167,10 +167,10 @@
   },
   {
    "id": 22,
-   "activation": 3.3528,
-   "contribution": 0.382,
-   "share": 0.0392,
-   "pulse_ms": 59
+   "activation": 3.2462,
+   "contribution": 0.3698,
+   "share": 0.0377,
+   "pulse_ms": 56
   },
   {
    "id": 23,
@@ -181,10 +181,10 @@
   },
   {
    "id": 24,
-   "activation": 6.8767,
-   "contribution": 1.6477,
-   "share": 0.1692,
-   "pulse_ms": 254
+   "activation": 7.076,
+   "contribution": 1.6954,
+   "share": 0.1726,
+   "pulse_ms": 259
   }
  ],
  "sent": {
@@ -207,6 +207,12 @@
    "t": "2026-11-24T07:00:00+00:00",
    "observed": 2075.4,
    "forecast": 2465.7,
+   "alive": 25
+  },
+  {
+   "t": "2026-11-24T08:00:00+00:00",
+   "observed": 2079.6,
+   "forecast": 2546.4,
    "alive": 25
   }
  ],
