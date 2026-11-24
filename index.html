@@ -13,15 +13,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400&family=Tinos&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f1f1ee; --ink:#151617; --ink2:#4a4c4f; --mid:#6c6e71; --muted:#9a9c9f; --rule:#c6c7c9; --faint:rgba(20,22,24,.08);
-    --ring:#b4b7ba; --cuso4:#318ecc; --deep:#1f2fb8; --cum:#13263a; --cum-fill:rgba(19,38,58,.26); --neg:#9a9c9f; --replay:rgba(49,142,204,.13);
+    --bg:#0e0e0f; --ink:#e4e5e6; --ink2:#b3b5b8; --mid:#86888c; --muted:#5d5f63; --rule:#2c2d30; --faint:rgba(255,255,255,.07);
+    --ring:#3d3f43; --cuso4:#4aa8ea; --deep:#8c98ff; --cum:#d9dbdd; --cum-fill:rgba(217,219,221,.22); --neg:#6b6d71; --replay:rgba(74,168,234,.12);
     --serif:"Times New Roman",Tinos,Times,serif;
     --sans:Helvetica,"Helvetica Neue",Arimo,Arial,sans-serif;
     --mono:Menlo,Consolas,"DejaVu Sans Mono",monospace;
-  }
-  body.dark{
-    --bg:#0e0e0f; --ink:#e4e5e6; --ink2:#b3b5b8; --mid:#86888c; --muted:#5d5f63; --rule:#2c2d30; --faint:rgba(255,255,255,.07);
-    --ring:#3d3f43; --cuso4:#4aa8ea; --deep:#8c98ff; --cum:#d9dbdd; --cum-fill:rgba(217,219,221,.22); --neg:#6b6d71; --replay:rgba(74,168,234,.12);
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;overflow:hidden}
@@ -95,7 +91,6 @@
 
 <script>
 const N = 25, TZ = "America/New_York", HOUR = 3.6e6, DAY = 864e5, FULL_MS = 100000;
-if (new URLSearchParams(location.search).get("theme") === "dark") document.body.classList.add("dark");
 const css = n => getComputedStyle(document.body).getPropertyValue(n).trim();
 const C = {ink: css("--ink"), ink2: css("--ink2"), mid: css("--mid"), muted: css("--muted"), ring: css("--ring"), faint: css("--faint"),
            cuso4: css("--cuso4"), deep: css("--deep"), cum: css("--cum"), cumFill: css("--cum-fill"), neg: css("--neg"), replay: css("--replay"), rule: css("--rule")};
