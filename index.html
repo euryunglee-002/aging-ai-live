@@ -87,12 +87,12 @@
 
   <section class="stats">
     <div class="stat">
-      <div class="label">NEMA demand · input hour</div>
+      <div class="label">NEMA demand · last full hour</div>
       <div class="big" id="obs">—</div>
       <div class="note" id="obsT">&nbsp;</div>
     </div>
     <div class="stat">
-      <div class="label">Forecast · next hour</div>
+      <div class="label">Forecast · the hour after</div>
       <div class="big cu" id="fc">—</div>
       <div class="note" id="fcT">&nbsp;</div>
     </div>
@@ -146,7 +146,7 @@ const N = 25, TZ = "America/New_York";
 const $ = id => document.getElementById(id);
 const fmtMW = v => v == null ? "—" : Math.round(v).toLocaleString("en-US");
 const bost = (iso, opt) => iso ? new Intl.DateTimeFormat("en-US", Object.assign({timeZone: TZ}, opt)).format(new Date(iso)) : "";
-const hhmm = iso => bost(iso, {hour: "2-digit", minute: "2-digit", hour12: false});
+const hhmm = iso => bost(iso, {hour: "2-digit", minute: "2-digit", hourCycle: "h23"});
 const day = iso => bost(iso, {month: "short", day: "numeric"});
 const NS = "http://www.w3.org/2000/svg";
 function el(tag, attrs, parent, text){
@@ -170,19 +170,23 @@ function render(s){
     drawCells(s, new Array(N).fill(0)); drawBars(s); drawChart([]);
     return;
   }
-  const ageH = (Date.now() - new Date(s.input_hour_utc)) / 3.6e6;
+  // LIVE only while the hour being forecast is still under way (or ahead).
+  const fcEnd = new Date(s.forecast_hour_boston).getTime() + 3.6e6;
+  const behindH = (Date.now() - fcEnd) / 3.6e6;
   const ended = s.alive === 0 || (s.sent && s.sent.status === "terminated");
   if (ended) setPill("ended", "TERMINATED");
-  else if (ageH > 48) setPill("ended", "LAST RECORD");
-  else if (ageH > 3) setPill("stale", "STALE DATA");
+  else if (behindH > 48) setPill("ended", "LAST RECORD");
+  else if (behindH > 0) setPill("stale", "DELAYED");
   else setPill("live", "LIVE");
-  $("src").textContent = "data: " + (s.source || "—");
-  $("upd").textContent = "updated " + day(s.updated_utc) + ", " + hhmm(s.updated_utc) + " Boston";
+  $("src").textContent = behindH > 0 && !ended
+    ? "waiting for the next hour of ISO-NE data"
+    : "data: " + (s.source || "—");
+  $("upd").textContent = "forecast made " + day(s.updated_utc) + ", " + hhmm(s.updated_utc) + " Boston";
 
   $("obs").innerHTML = fmtMW(s.observed_mw) + "<small>MW</small>";
-  $("obsT").textContent = day(s.input_hour_boston) + ", " + hhmm(s.input_hour_boston) + " Boston";
+  $("obsT").textContent = day(s.input_hour_boston) + ", " + hhmm(s.input_hour_boston) + "–" + hhmm(s.forecast_hour_boston) + " Boston";
   $("fc").innerHTML = fmtMW(s.forecast_mw) + "<small>MW</small>";
-  $("fcT").textContent = "for " + hhmm(s.forecast_hour_boston) + " Boston";
+  $("fcT").textContent = "for " + hhmm(s.forecast_hour_boston) + "–" + hhmm(new Date(new Date(s.forecast_hour_boston).getTime() + 3.6e6).toISOString()) + " Boston";
   $("alive").innerHTML = s.alive + "<small>/ 25</small>";
   const deadSet = new Set(s.dead || []);
   const active = (s.neurons || []).filter(n => n.pulse_ms > 0 && !deadSet.has(n.id)).length;
@@ -270,7 +274,7 @@ function drawChart(h){
   }
   const first = new Date(t0); first.setUTCMinutes(0, 0, 0);
   for (let t = first.getTime(); t <= t1; t += 3.6e6){
-    const hr = Number(bost(new Date(t).toISOString(), {hour: "numeric", hour12: false}));
+    const hr = Number(bost(new Date(t).toISOString(), {hour: "numeric", hourCycle: "h23"}));
     if (hr % every === 0 && t >= t0){
       el("line", {x1: x(t), x2: x(t), y1: T, y2: H - B, stroke: "var(--faint)"}, svg);
       el("text", {x: x(t), y: H - 12, "text-anchor": "middle", "font-size": 11, fill: "var(--mid)"}, svg,

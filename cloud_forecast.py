@@ -120,13 +120,25 @@ def main():
         print("No trained model found (aging_ai_boston_model.npz).")
         return
 
+    # The next input hour t+1 is complete only at t+2. Until then there is nothing new to fetch.
+    if old.get("input_hour_utc") and not old.get("error") and \
+            now < _t(old["input_hour_utc"]) + timedelta(hours=2):
+        print("The next hour is not complete yet.")
+        return
+
     try:
         p = R.predict_now()
     except Exception as e:                      # keep the last good forecast, note the error
-        old["error"] = re.sub(r"://[^/@\s]+@", "://", str(e))[:200]
-        old["updated_utc"] = now.isoformat()
-        OUT.write_text(json.dumps(old, indent=1))
-        print("forecast failed:", old["error"])
+        err = re.sub(r"://[^/@\s]+@", "://", str(e))[:200]
+        if old.get("error") != err:             # one commit per new error, not one per attempt
+            old["error"] = err
+            old["updated_utc"] = now.isoformat()
+            OUT.write_text(json.dumps(old, indent=1))
+        print("forecast failed:", err)
+        return
+
+    if old.get("input_hour_utc") == p["ts"].isoformat() and not old.get("error"):
+        print("ISO-NE has not posted the next hour yet; trying again in 10 minutes.")
         return
 
     R.write_status(p, sent={"status": "view only"})
