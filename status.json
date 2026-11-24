@@ -1,22 +1,22 @@
 {
- "updated_utc": "2026-11-24T06:09:55.025802+00:00",
- "error": "no hour where both demand and weather exist",
- "source": "ISO New England, NEMA (4008)",
- "input_hour_utc": "2026-09-22T11:00:00+00:00",
- "input_hour_boston": "2026-09-22T07:00:00-04:00",
- "forecast_hour_boston": "2026-09-22T08:00:00-04:00",
- "age_hours": 0.33,
- "observed_mw": 2496.2,
- "forecast_mw": 2445.6,
+ "updated_utc": "2026-11-24T06:11:41.262396+00:00",
+ "error": null,
+ "source": "ISO-NE",
+ "input_hour_utc": "2026-11-24T05:00:00+00:00",
+ "input_hour_boston": "2026-11-24T00:00:00-05:00",
+ "forecast_hour_boston": "2026-11-24T01:00:00-05:00",
+ "age_hours": 1.19,
+ "observed_mw": 2160.7,
+ "forecast_mw": 2568.6,
  "alive": 25,
  "dead": [],
  "neurons": [
   {
    "id": 0,
-   "activation": 0.0,
-   "contribution": 0.0,
-   "share": 0.0,
-   "pulse_ms": 0
+   "activation": 4.049,
+   "contribution": 2.8155,
+   "share": 0.2952,
+   "pulse_ms": 443
   },
   {
    "id": 1,
@@ -27,10 +27,10 @@
   },
   {
    "id": 2,
-   "activation": 1.1737,
-   "contribution": 0.3825,
-   "share": 0.21082,
-   "pulse_ms": 316
+   "activation": 5.3122,
+   "contribution": 1.7312,
+   "share": 0.1815,
+   "pulse_ms": 272
   },
   {
    "id": 3,
@@ -41,10 +41,10 @@
   },
   {
    "id": 4,
-   "activation": 0.5608,
-   "contribution": 0.1374,
-   "share": 0.07571,
-   "pulse_ms": 114
+   "activation": 1.5704,
+   "contribution": 0.3846,
+   "share": 0.0403,
+   "pulse_ms": 60
   },
   {
    "id": 5,
@@ -55,10 +55,10 @@
   },
   {
    "id": 6,
-   "activation": 0.7888,
-   "contribution": 0.2309,
-   "share": 0.12725,
-   "pulse_ms": 191
+   "activation": 2.0575,
+   "contribution": 0.6021,
+   "share": 0.0631,
+   "pulse_ms": 95
   },
   {
    "id": 7,
@@ -76,10 +76,10 @@
   },
   {
    "id": 9,
-   "activation": 0.6791,
-   "contribution": 0.1626,
-   "share": 0.0896,
-   "pulse_ms": 134
+   "activation": 5.3457,
+   "contribution": 1.2796,
+   "share": 0.1342,
+   "pulse_ms": 201
   },
   {
    "id": 10,
@@ -97,24 +97,24 @@
   },
   {
    "id": 12,
-   "activation": 0.0,
-   "contribution": 0.0,
-   "share": 0.0,
-   "pulse_ms": 0
+   "activation": 0.3584,
+   "contribution": 0.0434,
+   "share": 0.0046,
+   "pulse_ms": 7
   },
   {
    "id": 13,
-   "activation": 1.0847,
-   "contribution": 0.1608,
-   "share": 0.08864,
-   "pulse_ms": 133
+   "activation": 2.7626,
+   "contribution": 0.4096,
+   "share": 0.0429,
+   "pulse_ms": 64
   },
   {
    "id": 14,
-   "activation": 0.0,
-   "contribution": 0.0,
-   "share": 0.0,
-   "pulse_ms": 0
+   "activation": 0.076,
+   "contribution": 0.0211,
+   "share": 0.0022,
+   "pulse_ms": 3
   },
   {
    "id": 15,
@@ -125,17 +125,17 @@
   },
   {
    "id": 16,
-   "activation": 0.0965,
-   "contribution": 0.0189,
-   "share": 0.01043,
-   "pulse_ms": 16
+   "activation": 0.0,
+   "contribution": 0.0,
+   "share": 0.0,
+   "pulse_ms": 0
   },
   {
    "id": 17,
-   "activation": 1.5532,
-   "contribution": 0.2888,
-   "share": 0.15916,
-   "pulse_ms": 239
+   "activation": 0.2927,
+   "contribution": 0.0544,
+   "share": 0.0057,
+   "pulse_ms": 9
   },
   {
    "id": 18,
@@ -146,10 +146,10 @@
   },
   {
    "id": 19,
-   "activation": 0.0,
-   "contribution": 0.0,
-   "share": 0.0,
-   "pulse_ms": 0
+   "activation": 1.9286,
+   "contribution": 0.1763,
+   "share": 0.0185,
+   "pulse_ms": 28
   },
   {
    "id": 20,
@@ -160,17 +160,17 @@
   },
   {
    "id": 21,
-   "activation": 0.2278,
-   "contribution": 0.0518,
-   "share": 0.02853,
-   "pulse_ms": 43
-  },
-  {
-   "id": 22,
    "activation": 0.0,
    "contribution": 0.0,
    "share": 0.0,
    "pulse_ms": 0
+  },
+  {
+   "id": 22,
+   "activation": 3.5874,
+   "contribution": 0.4087,
+   "share": 0.0428,
+   "pulse_ms": 64
   },
   {
    "id": 23,
@@ -181,20 +181,20 @@
   },
   {
    "id": 24,
-   "activation": 1.5891,
-   "contribution": 0.3808,
-   "share": 0.20987,
-   "pulse_ms": 315
+   "activation": 6.7233,
+   "contribution": 1.6109,
+   "share": 0.1689,
+   "pulse_ms": 253
   }
  ],
  "sent": {
-  "status": "not sent"
+  "status": "view only"
  },
  "history": [
   {
-   "t": "2026-09-22T11:00:00+00:00",
-   "observed": 2496.2,
-   "forecast": 2445.6,
+   "t": "2026-11-24T05:00:00+00:00",
+   "observed": 2160.7,
+   "forecast": 2568.6,
    "alive": 25
   }
  ],
@@ -225,7 +225,7 @@
   0,
   0
  ],
- "mode": "mirror",
- "server_utc": "2026-09-22T11:20:00+00:00",
+ "mode": "standalone",
+ "publisher": "cloud",
  "has_forecast": true
 }
