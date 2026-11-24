@@ -9,96 +9,140 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500&family=Tinos:ital@0;1&display=swap" rel="stylesheet">
 <style>
+  /* Colours taken from the installation photographs:
+     black slotted-angle steel, the spot-lit gallery wall, copper sulfate in the tubes,
+     the ultramarine lower chamber, dark copper on the cathodes, the gallery floor. */
   :root{
-    --ink:#272826; --ink2:#525550; --mid:#767973; --muted:#9d998b; --rule:#d9d8d2; --faint:#ecebe6;
-    --paper:#f1f1eb; --cu:#aa4928; --cu-l:#c47045; --tube:#e9eff2; --tube-line:#9aa7ae;
+    --steel:#141416; --ink:#151617; --ink2:#46484b; --mid:#67696c; --muted:#8c8e91;
+    --rule:rgba(20,22,24,.16); --faint:rgba(20,22,24,.08);
+    --wall-hi:#f3f4f5; --wall:#e6e7e9; --wall-lo:#b3b5b8;
+    --cuso4:#318ecc; --cuso4-text:#1d69a9; --cuso4-l:#8bb8d0; --deep:#1f2fb8; --deposit:#13263a;
+    --glass:#eef3f6; --floor:#2f2c27; --floor-text:#b9b4aa;
     --serif:"Times New Roman",Tinos,Times,serif;
     --sans:Helvetica,"Helvetica Neue",Arimo,Arial,sans-serif;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
-  body{margin:0;background:#fff;color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1120px;margin:0 auto;padding:28px 40px 48px}
+  /* the wall behind the tower: brightest in the middle, falling off toward the corners */
+  body{margin:0;color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;
+       background:linear-gradient(90deg,var(--wall-lo) 0%,var(--wall) 20%,var(--wall-hi) 50%,var(--wall) 80%,var(--wall-lo) 100%)}
   svg text{font-family:var(--sans)}
 
-  /* top bar */
-  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap}
+  /* top beam */
+  .beam{background:var(--steel);color:#d9dadc;display:flex;justify-content:space-between;align-items:center;gap:12px;
+        padding:10px 28px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;flex-wrap:wrap}
+  .beam .right{display:flex;gap:18px;align-items:center;flex-wrap:wrap;letter-spacing:.06em;text-transform:none;font-size:12px;color:#9fa1a4}
+  .state{display:inline-flex;align-items:center;gap:7px;letter-spacing:.14em;text-transform:uppercase;font-size:11.5px}
+  .state .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+  .live{color:#5fb6ea} .live .dot{box-shadow:0 0 8px #5fb6ea;animation:beat 2s ease-in-out infinite}
+  .delayed{color:#c9cacc} .wait,.offline{color:#8c8e91} .ended{color:#fff}
+  @keyframes beat{0%,100%{opacity:1}50%{opacity:.25}}
+
+  /* hero: the installation in the room */
+  .hero{position:relative;background:#1b1b1c;height:min(86vh,940px);min-height:520px;overflow:hidden}
+  .hero picture,.hero img{display:block;width:100%;height:100%}
+  .hero img{object-fit:cover;object-position:50% 38%}
+  .hero::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(to bottom,rgba(0,0,0,0) 52%,rgba(12,12,12,.62) 100%)}
+  .hero .title{position:absolute;left:max(28px,calc(50% - 520px));bottom:44px;z-index:1;color:#fff;max-width:520px}
+  h1{font:400 84px/1 var(--serif);letter-spacing:-.02em;margin:0}
+  .q{font:italic 400 23px/1.3 var(--serif);margin:14px 0 0;color:#e7e9ea}
+
+  /* the shelf: two slotted-angle uprights; each section is one level */
+  .shelf{position:relative;max-width:1100px;margin:0 auto;padding:0 64px}
+  .shelf::before,.shelf::after{content:"";position:absolute;top:0;bottom:0;width:18px;background-color:var(--steel);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='26'%3E%3Ccircle cx='9' cy='5' r='3.3' fill='%23c4c5c8'/%3E%3Crect x='7.7' y='5' width='2.6' height='9' rx='1.3' fill='%23c4c5c8'/%3E%3Ccircle cx='9' cy='20' r='1.5' fill='%23c4c5c8'/%3E%3C/svg%3E");
+    background-repeat:repeat-y}
+  .shelf::before{left:0} .shelf::after{right:0}
+  .level{padding:46px 0 40px;border-bottom:6px solid var(--steel);margin:0 -46px;padding-left:46px;padding-right:46px}
+  .level:last-of-type{border-bottom:0}
+  .intro{padding-top:40px}
+  .lede{margin:0;max-width:620px;font-size:17px;line-height:1.55}
+  .mode{margin:14px 0 0;font-size:13px;color:var(--mid)}
+  .err{margin:16px 0 0;padding:9px 12px;border-left:2px solid var(--deep);background:rgba(255,255,255,.5);font-size:13px;color:var(--ink2);display:none}
+
   .kicker{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
   .kicker b{font-weight:400;color:var(--muted);margin-right:14px}
-  .status{text-align:right;font-size:12.5px;color:var(--mid);line-height:1.6}
-  .state{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
-  .state .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
-  .live{color:var(--cu)} .live .dot{animation:beat 2s ease-in-out infinite}
-  .delayed{color:var(--ink2)} .wait,.offline{color:var(--muted)} .ended{color:var(--ink)}
-  @keyframes beat{0%,100%{opacity:1}50%{opacity:.2}}
-
-  /* hero */
-  .hero{padding:44px 0 40px;border-bottom:1px solid var(--rule)}
-  h1{font:400 76px/1 var(--serif);letter-spacing:-.02em;margin:0}
-  .q{font:italic 400 24px/1.3 var(--serif);margin:18px 0 0;max-width:560px}
-  .lede{margin:18px 0 0;max-width:560px;font-size:16px;color:var(--ink)}
-  .mode{margin:16px 0 0;font-size:13px;color:var(--mid)}
-
-  /* sections */
-  section.s{padding:40px 0 8px}
-  h2{font:400 38px/1.1 var(--serif);letter-spacing:-.01em;margin:14px 0 6px}
+  h2{font:400 40px/1.1 var(--serif);letter-spacing:-.01em;margin:12px 0 6px}
   h3{font:400 26px/1.15 var(--serif);margin:0 0 4px}
   .sub{color:var(--ink2);margin:0 0 18px;max-width:720px}
   .fine{color:var(--mid);font-size:13px;margin:10px 0 0;max-width:760px}
-  .err{margin:18px 0 0;padding:9px 12px;border-left:2px solid var(--cu);background:var(--paper);font-size:13px;color:var(--ink2);display:none}
 
-  /* flow: observed -> neurons -> forecast */
-  .flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:start;gap:0 10px;margin:26px 0 36px;
+  .flow{display:grid;grid-template-columns:1fr 34px 1fr 34px 1fr;align-items:start;gap:0 10px;margin:24px 0 34px;
         padding-bottom:30px;border-bottom:1px solid var(--rule)}
-  .num{font:400 46px/1 var(--serif);letter-spacing:-.01em;font-variant-numeric:lining-nums}
+  .num{font:400 48px/1 var(--serif);letter-spacing:-.01em;font-variant-numeric:lining-nums}
   .num small{font:400 17px var(--sans);color:var(--ink2);margin-left:6px;letter-spacing:0}
-  .num.cu{color:var(--cu)}
-  .cap{margin-top:8px;color:var(--ink)}
+  .num.deep{color:var(--deep)}
+  .cap{margin-top:8px}
   .cap2{color:var(--mid);font-size:13px}
   .arrow{height:24px;margin-top:12px}
   .neur{display:flex;gap:14px;align-items:flex-start}
   #grid{flex:none}
 
-  /* charts */
+  /* photographs of the body */
+  .photos{display:grid;grid-template-columns:1fr 1.45fr;gap:12px;margin-top:22px}
+  .photos .col{display:grid;gap:12px}
+  .photos img{display:block;width:100%;height:100%;object-fit:cover}
+  .photos figure{margin:0;overflow:hidden;background:#d0d2d4}
+
+  .photos .wide{aspect-ratio:1500/980}
+
   .legend{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:12.5px;color:var(--ink2);margin:0 0 10px}
   .legend span{white-space:nowrap}
   .legend i{display:inline-block;width:20px;height:0;border-top:1.5px solid var(--ink);vertical-align:middle;margin-right:7px}
-  .legend i.f{border-top:1.5px dashed var(--cu)}
-  .legend i.r{width:14px;height:10px;border:0;background:var(--paper);vertical-align:-1px}
+  .legend i.f{border-top:1.5px dashed var(--deep)}
+  .legend i.r{width:14px;height:10px;border:0;background:rgba(49,142,204,.14);vertical-align:-1px}
   .pair{display:flex;gap:56px;flex-wrap:wrap;margin:22px 0 0}
-  .pair .num{font-size:40px}
+  .pair .num{font-size:42px}
 
-  footer{margin-top:44px;border-top:1px solid var(--rule);padding-top:14px;color:var(--mid);font-size:12.5px;
-         display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
+  footer{background:var(--floor);color:var(--floor-text);font-size:12.5px}
+  footer .in{max-width:1100px;margin:0 auto;padding:22px 64px 30px;display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
 
   @media (max-width:760px){
-    .wrap{padding:20px 16px 36px}
-    .status{text-align:left}
-    .hero{padding:32px 0 30px}
-    h1{font-size:54px} .q{font-size:20px} .lede{font-size:15px}
-    h2{font-size:30px} h3{font-size:22px}
+    .beam{padding:9px 16px}
+    .hero{height:78vh;min-height:460px}
+    .hero .title{left:18px;right:18px;bottom:26px}
+    h1{font-size:58px} .q{font-size:19px}
+    .shelf{padding:0 26px}
+    .shelf::before,.shelf::after{width:8px;background-size:8px 12px}
+    .level{margin:0 -18px;padding:34px 18px 30px;border-bottom-width:4px}
+    .lede{font-size:15.5px}
+    h2{font-size:31px} h3{font-size:22px}
     .flow{grid-template-columns:1fr;gap:22px}
     .flow .arrow{display:none}
-    .num{font-size:40px}
+    .num{font-size:42px}
+    .photos{grid-template-columns:1fr}
+    .photos .tall{aspect-ratio:1100/1300}
     .pair{gap:24px 40px}
+    footer .in{padding:18px 16px 26px}
   }
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="top">
-    <div class="kicker">Live record · Boston</div>
-    <div class="status">
-      <div id="pill" class="state wait"><span class="dot"></span><span id="pilltext">Connecting</span></div>
-      <div id="upd">&nbsp;</div>
-      <div id="src">&nbsp;</div>
-    </div>
-  </div>
+<div class="beam">
+  <span>Aging AI · live record · Boston</span>
+  <span class="right">
+    <span id="pill" class="state wait"><span class="dot"></span><span id="pilltext">Connecting</span></span>
+    <span id="upd"></span>
+    <span id="src"></span>
+  </span>
+</div>
 
-  <section class="hero">
+<header class="hero">
+  <picture>
+    <source media="(max-width:760px)" srcset="img/installation_m.jpg">
+    <img src="img/installation.jpg" alt="The installation: a black slotted-steel tower in a gallery, holding a glass tank of 25 copper sulfate tubes, wired from above.">
+  </picture>
+  <div class="title">
     <h1>Aging AI</h1>
     <p class="q">If artificial intelligence were visibly finite, would we still consume it as casually as we do now?</p>
+  </div>
+</header>
+
+<main class="shelf">
+
+  <section class="level intro">
     <p class="lede">A network forecasts Boston's electricity demand every hour. Each of its 25 neurons drives one
       copper cell: the more a neuron carries a forecast, the longer its cell gets current. When copper bridges a
       cell, that neuron is gone for good.</p>
@@ -106,17 +150,16 @@
     <div class="err" id="err"></div>
   </section>
 
-  <section class="s">
+  <section class="level">
     <div class="kicker"><b>01</b>This hour</div>
     <h2>One forecast, 25 pulse times</h2>
-
     <div class="flow">
       <div>
         <div class="num" id="obs">—</div>
         <div class="cap">Observed demand</div>
         <div class="cap2" id="obsT">&nbsp;</div>
       </div>
-      <svg class="arrow" viewBox="0 0 34 24" width="34"><line x1="0" y1="12" x2="32" y2="12" stroke="#272826" stroke-width="1"/><path d="M27 8 L32 12 L27 16" fill="none" stroke="#272826" stroke-width="1"/></svg>
+      <svg class="arrow" viewBox="0 0 34 24" width="34"><line x1="0" y1="12" x2="32" y2="12" stroke="#151617" stroke-width="1"/><path d="M27 8 L32 12 L27 16" fill="none" stroke="#151617" stroke-width="1"/></svg>
       <div class="neur">
         <svg id="grid" width="58" height="58" viewBox="0 0 58 58" aria-label="25 neurons"></svg>
         <div>
@@ -125,51 +168,69 @@
           <div class="cap2" id="aliveT">&nbsp;</div>
         </div>
       </div>
-      <svg class="arrow" viewBox="0 0 34 24" width="34"><line x1="0" y1="12" x2="32" y2="12" stroke="#272826" stroke-width="1"/><path d="M27 8 L32 12 L27 16" fill="none" stroke="#272826" stroke-width="1"/></svg>
+      <svg class="arrow" viewBox="0 0 34 24" width="34"><line x1="0" y1="12" x2="32" y2="12" stroke="#151617" stroke-width="1"/><path d="M27 8 L32 12 L27 16" fill="none" stroke="#151617" stroke-width="1"/></svg>
       <div>
-        <div class="num cu" id="fc">—</div>
+        <div class="num deep" id="fc">—</div>
         <div class="cap">Forecast</div>
         <div class="cap2" id="fcT">&nbsp;</div>
       </div>
     </div>
-
     <h3>Pulse time per cell</h3>
     <p class="sub">A 1,500 ms budget is divided in proportion to each neuron's contribution, |activation × output weight|. One neuron = one cell.</p>
     <svg id="cells" width="100%" style="display:block" role="img" aria-label="pulse time for each of the 25 cells"></svg>
     <p class="fine" id="sent"></p>
   </section>
 
-  <section class="s">
-    <div class="kicker"><b>02</b>Last 72 hours</div>
+  <section class="level">
+    <div class="kicker"><b>02</b>The body</div>
+    <h2>25 tubes of copper sulfate</h2>
+    <p class="sub">In each tube a copper cathode hangs from above and an anode rises from below. While its neuron's
+      pulse runs, copper leaves the anode and builds up on the cathode, growing down toward the anode.</p>
+    <div class="photos">
+      <figure class="tall"><img src="img/cell_deposit.jpg" alt="Close-up: dark copper deposits on the cathodes inside blue copper sulfate tubes." loading="lazy"></figure>
+      <div class="col">
+        <figure class="wide"><img src="img/cells_row.jpg" alt="A row of tubes; copper has built up unevenly from one cell to the next." loading="lazy"></figure>
+        <figure class="wide"><img src="img/tank.jpg" alt="The glass tank on the steel shelf, tubes above and the ultramarine lower chamber below." loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="level">
+    <div class="kicker"><b>03</b>Last 72 hours</div>
     <h2>Demand and forecast</h2>
     <p class="sub">Each forecast is drawn at the hour it was made for.</p>
     <div class="legend"><span><i></i>Observed demand, NEMA zone</span><span><i class="f"></i>Forecast</span></div>
     <svg id="chart" width="100%" style="display:block" role="img" aria-label="demand and forecast, last 72 hours"></svg>
   </section>
 
-  <section class="s" id="recBox" style="display:none">
-    <div class="kicker"><b>03</b>Since training</div>
+  <section class="level" id="recBox" style="display:none">
+    <div class="kicker"><b>04</b>Since training</div>
     <h2 id="recTitle">Frozen</h2>
     <p class="sub" id="recSub"></p>
     <div class="legend"><span><i></i>Observed, daily average</span><span><i class="f"></i>Forecast, daily average</span><span><i class="r"></i>Replayed</span></div>
     <svg id="rec" width="100%" style="display:block" role="img" aria-label="daily demand and forecast since training"></svg>
     <div class="pair">
       <div><div class="num" id="mFirst">—</div><div class="cap2">average miss per hour,<br>first 7 days after training</div></div>
-      <div><div class="num cu" id="mLast">—</div><div class="cap2">average miss per hour,<br>last 7 days</div></div>
+      <div><div class="num deep" id="mLast">—</div><div class="cap2">average miss per hour,<br>last 7 days</div></div>
     </div>
     <p class="fine" id="recFine"></p>
   </section>
 
-  <footer>
+</main>
+
+<footer>
+  <div class="in">
     <span>Data: ISO New England, NEMA zone 4008 (five-minute estimated load, hourly means) · Open-Meteo, Boston.</span>
     <span>Trained once, then frozen. It does not learn; it only ages.</span>
-  </footer>
-</div>
+  </div>
+</footer>
 
 <script>
 const N = 25, TZ = "America/New_York", HOUR = 3.6e6, DAY = 864e5;
-const C = {ink: "#272826", ink2: "#525550", mid: "#767973", muted: "#9d998b", rule: "#d9d8d2", faint: "#ecebe6",
-           paper: "#f1f1eb", cu: "#aa4928", tube: "#e9eff2", tubeLine: "#9aa7ae"};
+const C = {ink: "#151617", ink2: "#46484b", mid: "#67696c", muted: "#8c8e91", steel: "#141416",
+           faint: "rgba(20,22,24,.09)", axis: "rgba(20,22,24,.45)",
+           cuso4: "#318ecc", cuso4Top: "#5aa9dc", cuso4Bot: "#2a7fbf", deep: "#1f2fb8", deposit: "#13263a",
+           glass: "#eef3f6", glassLine: "#7f9fb3", replay: "rgba(49,142,204,.14)"};
 const $ = id => document.getElementById(id);
 const fmtMW = v => v == null ? "—" : Math.round(v).toLocaleString("en-US");
 const bost = (iso, opt) => iso ? new Intl.DateTimeFormat("en-US", Object.assign({timeZone: TZ}, opt)).format(new Date(iso)) : "";
@@ -208,7 +269,7 @@ function render(s){
   else if (behindH > 0) setPill("delayed", "Delayed");
   else setPill("live", "Live");
   $("upd").textContent = "forecast made " + day(s.updated_utc) + ", " + hhmm(s.updated_utc) + " Boston";
-  $("src").textContent = behindH > 0 && !ended ? "waiting for the next hour of ISO-NE data" : "data: ISO New England · Open-Meteo";
+  $("src").textContent = behindH > 0 && !ended ? "waiting for the next hour of ISO-NE data" : "";
 
   $("obs").innerHTML = fmtMW(s.observed_mw) + "<small>MW</small>";
   $("obsT").textContent = day(s.input_hour_boston) + ", " + hhmm(s.input_hour_boston) + "–" + hhmm(s.forecast_hour_boston) + " Boston";
@@ -241,18 +302,22 @@ function drawGrid(s){
   for (let i = 0; i < N; i++){
     const cx = 5 + (i % 5) * 12, cy = 5 + Math.floor(i / 5) * 12;
     if (dead.has(i)) el("circle", {cx, cy, r: 3.2, fill: "none", stroke: C.muted, "stroke-width": 1}, svg);
-    else el("circle", {cx, cy, r: 3.4, fill: on.has(i) ? C.cu : C.ink}, svg);
+    else el("circle", {cx, cy, r: 3.4, fill: on.has(i) ? C.cuso4 : C.steel}, svg);
   }
 }
 
 function drawCells(s, copper){
   const svg = $("cells"); svg.innerHTML = "";
-  const W = Math.max(320, Math.round(svg.parentNode.clientWidth || 1040));
+  const W = Math.max(300, Math.round(svg.parentNode.clientWidth || 980));
   const small = W < 600;
-  const L = 4, R = 4, cw = (W - L - R) / N;
-  const top = 26, stemH = small ? 90 : 120, base = top + stemH;           // pulse stems
-  const tubeTop = base + 26, tubeH = small ? 96 : 118, H = tubeTop + tubeH + 46;
+  const L = 2, R = 2, cw = (W - L - R) / N;
+  const top = 26, stemH = small ? 86 : 116, base = top + stemH;
+  const tubeTop = base + 30, tubeH = small ? 120 : 150, H = tubeTop + tubeH + 46;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
+  const defs = el("defs", {}, svg);
+  const g = el("linearGradient", {id: "sol", x1: 0, y1: 0, x2: 0, y2: 1}, defs);
+  el("stop", {offset: "0", "stop-color": C.glass}, g); el("stop", {offset: ".07", "stop-color": C.glass}, g);
+  el("stop", {offset: ".075", "stop-color": C.cuso4Top}, g); el("stop", {offset: "1", "stop-color": C.cuso4Bot}, g);
   const dead = new Set(s.dead || []);
   const ms = Array.from({length: N}, (_, i) => dead.has(i) ? 0 : ((s.neurons || [])[i] || {}).pulse_ms || 0);
   const mx = Math.max(1, ...ms);
@@ -262,56 +327,51 @@ function drawCells(s, copper){
   const cmax = Math.max(1, ...copper.filter((c, i) => !dead.has(i)));
   const x = i => L + (i + .5) * cw;
 
-  // baseline with ticks
-  el("line", {x1: L, x2: W - R, y1: base, y2: base, stroke: C.muted, "stroke-width": 1}, svg);
+  el("line", {x1: L, x2: W - R, y1: base, y2: base, stroke: C.axis, "stroke-width": 1}, svg);
   for (let i = 0; i < N; i++){
-    el("line", {x1: x(i), x2: x(i), y1: base, y2: base + 4, stroke: C.muted, "stroke-width": 1}, svg);
-    if (ms[i] > 0){
-      const y = base - Math.max(3, ms[i] / mx * stemH);
-      const col = i === lead ? C.cu : C.ink;
-      el("line", {x1: x(i), x2: x(i), y1: base, y2: y, stroke: col, "stroke-width": i === lead ? 2 : 1.3}, svg);
-      el("circle", {cx: x(i), cy: y, r: i === lead ? 3.2 : 2.6, fill: col}, svg);
-      if (labelled.has(i)){
-        const anchor = i < 2 ? "start" : i > N - 3 ? "end" : "middle";
-        el("text", {x: x(i), y: y - 9, "text-anchor": anchor, "font-size": 12.5, fill: col}, svg, ms[i] + " ms");
-      }
+    if (ms[i] <= 0) continue;
+    const y = base - Math.max(3, ms[i] / mx * stemH), col = i === lead ? C.deep : C.steel;
+    el("line", {x1: x(i), x2: x(i), y1: base, y2: y, stroke: col, "stroke-width": i === lead ? 2.2 : 1.3}, svg);
+    el("circle", {cx: x(i), cy: y, r: i === lead ? 3.4 : 2.6, fill: col}, svg);
+    if (labelled.has(i)){
+      const anchor = i < 2 ? "start" : i > N - 3 ? "end" : "middle";
+      el("text", {x: x(i), y: y - 9, "text-anchor": anchor, "font-size": 12.5, fill: col}, svg, ms[i] + " ms");
     }
   }
 
-  // tubes: cathode from the top, anode from the bottom, copper on the cathode
-  const tw = Math.min(16, cw * .58);
+  // the tubes, as in the tank: copper sulfate, cathode from above, anode from below
+  const tw = Math.min(18, cw * .62);
   for (let i = 0; i < N; i++){
-    const cx = x(i), isDead = dead.has(i);
-    el("rect", {x: cx - tw / 2, y: tubeTop, width: tw, height: tubeH, rx: tw / 2, fill: isDead ? "#f4f4f1" : C.tube,
-                stroke: isDead ? C.muted : C.tubeLine, "stroke-width": .9}, svg);
-    const tip = tubeTop + tubeH * .42, an = tubeTop + tubeH * .72;
-    el("line", {x1: cx, x2: cx, y1: tubeTop - 14, y2: tip, stroke: C.ink, "stroke-width": 1.1}, svg);
-    el("line", {x1: cx, x2: cx, y1: an, y2: tubeTop + tubeH + 10, stroke: C.ink, "stroke-width": 1.1}, svg);
+    const cx = x(i), isDead = dead.has(i), fed = ms[i] > 0;
+    if (fed) el("line", {x1: cx, x2: cx, y1: base, y2: tubeTop - 16, stroke: i === lead ? C.deep : C.steel, "stroke-width": .8, "stroke-dasharray": "2 2"}, svg);
+    el("rect", {x: cx - tw / 2, y: tubeTop, width: tw, height: tubeH, rx: tw / 2, fill: "url(#sol)",
+                stroke: C.glassLine, "stroke-width": .8, opacity: isDead ? .45 : 1}, svg);
+    const tip = tubeTop + tubeH * .46, an = tubeTop + tubeH * .74;
+    el("line", {x1: cx, x2: cx, y1: tubeTop - 16, y2: tip, stroke: C.steel, "stroke-width": 1.6}, svg);
+    el("line", {x1: cx, x2: cx, y1: an, y2: tubeTop + tubeH + 10, stroke: C.steel, "stroke-width": 1.6}, svg);
     if (isDead){
-      el("line", {x1: cx, x2: cx, y1: tip, y2: an, stroke: C.cu, "stroke-width": 2}, svg);   // the bridge
+      el("rect", {x: cx - tw * .22, y: tip, width: tw * .44, height: an - tip, fill: C.deposit}, svg);   // the bridge
     } else if (copper[i] > 0){
-      const g = (an - tip - 4) * Math.sqrt(copper[i] / cmax);
-      el("line", {x1: cx, x2: cx, y1: tip, y2: tip + g, stroke: C.cu, "stroke-width": 2}, svg);
-      if (g > 8){
-        el("line", {x1: cx, x2: cx - tw * .3, y1: tip + g * .45, y2: tip + g * .3, stroke: C.cu, "stroke-width": 1.4}, svg);
-        el("line", {x1: cx, x2: cx + tw * .3, y1: tip + g * .7, y2: tip + g * .55, stroke: C.cu, "stroke-width": 1.4}, svg);
-      }
+      const h = (an - tip - 4) * Math.sqrt(copper[i] / cmax), w = tw * .2 + tw * .25 * Math.sqrt(copper[i] / cmax);
+      el("path", {d: `M${cx - 1},${tip} L${cx - w},${tip + h * .45} L${cx - w * .5},${tip + h * .7} L${cx - w * .8},${tip + h}`
+                    + ` L${cx + w * .6},${tip + h * .85} L${cx + w},${tip + h * .4} L${cx + 1},${tip} Z`, fill: C.deposit}, svg);
     }
     const show = small ? (i % 6 === 0 || i === 24 || i === lead) : (i % 5 === 0 || i === 24 || i === lead);
     if (show && !(i !== lead && lead >= 0 && Math.abs(i - lead) < (small ? 3 : 2))){
-      el("text", {x: cx, y: tubeTop + tubeH + 28, "text-anchor": "middle", "font-size": 12,
-                  fill: i === lead ? C.cu : isDead ? C.muted : C.ink, "text-decoration": isDead ? "line-through" : "none"},
+      el("text", {x: i === 0 ? cx - tw / 2 : i === N - 1 ? cx + tw / 2 : cx, y: tubeTop + tubeH + 28,
+                  "text-anchor": i === 0 ? "start" : i === N - 1 ? "end" : "middle", "font-size": 12,
+                  fill: i === lead ? C.deep : isDead ? C.muted : C.ink, "text-decoration": isDead ? "line-through" : "none"},
          svg, (i === lead ? "N" : "") + nn(i));
     }
   }
   el("text", {x: W - R, y: H - 2, "text-anchor": "end", "font-size": 11.5, fill: C.mid}, svg,
-     copper.some(c => c > 0) ? "copper drawn in proportion to the current each cell has received" : "no copper deposited");
+     copper.some(c => c > 0) ? "copper drawn in proportion to the current each cell has received" : "no copper deposited by this record yet");
 }
 
 // ---------------------------------------------------------------- charts
-function frame(svg, h){
+function frame(svg){
   svg.innerHTML = "";
-  const W = Math.max(320, Math.round(svg.parentNode.clientWidth || 1040)), H = h || (W < 600 ? 230 : 280);
+  const W = Math.max(300, Math.round(svg.parentNode.clientWidth || 980)), H = W < 600 ? 230 : 280;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
   return {W, H, L: 46, R: 6, T: 14, B: 32};
 }
@@ -324,10 +384,9 @@ function yAxis(svg, f, lo, hi, y){
   }
 }
 function range(vals){
-  let lo = Math.min(...vals), hi = Math.max(...vals); const pad = (hi - lo) * .12 || 50;
+  const lo = Math.min(...vals), hi = Math.max(...vals), pad = (hi - lo) * .12 || 50;
   return [lo - pad, hi + pad];
 }
-
 function drawChart(h){
   const svg = $("chart"), f = frame(svg);
   if (h.length < 2){
@@ -344,16 +403,16 @@ function drawChart(h){
   for (let t = first.getTime(); t <= t1; t += HOUR){
     const hr = Number(bost(new Date(t).toISOString(), {hour: "numeric", hourCycle: "h23"}));
     if (hr % every === 0 && t >= t0){
-      el("line", {x1: x(t), x2: x(t), y1: f.H - f.B, y2: f.H - f.B + 4, stroke: C.muted}, svg);
+      el("line", {x1: x(t), x2: x(t), y1: f.H - f.B, y2: f.H - f.B + 4, stroke: C.axis}, svg);
       el("text", {x: x(t), y: f.H - 10, "text-anchor": "middle", "font-size": 11, fill: C.mid}, svg,
          bost(new Date(t).toISOString(), {weekday: "short"}) + " " + nn(hr) + ":00");
     }
   }
-  el("line", {x1: f.L, x2: f.W - f.R, y1: f.H - f.B, y2: f.H - f.B, stroke: C.muted}, svg);
-  el("path", {d: "M" + pts.map(p => x(p.t).toFixed(1) + "," + y(p.o).toFixed(1)).join(" L"), fill: "none", stroke: C.ink, "stroke-width": 1.5}, svg);
-  el("path", {d: "M" + pts.map(p => x(p.t + HOUR).toFixed(1) + "," + y(p.f).toFixed(1)).join(" L"), fill: "none", stroke: C.cu, "stroke-width": 1.5, "stroke-dasharray": "4 3"}, svg);
+  el("line", {x1: f.L, x2: f.W - f.R, y1: f.H - f.B, y2: f.H - f.B, stroke: C.axis}, svg);
+  el("path", {d: "M" + pts.map(p => x(p.t).toFixed(1) + "," + y(p.o).toFixed(1)).join(" L"), fill: "none", stroke: C.steel, "stroke-width": 1.6}, svg);
+  el("path", {d: "M" + pts.map(p => x(p.t + HOUR).toFixed(1) + "," + y(p.f).toFixed(1)).join(" L"), fill: "none", stroke: C.deep, "stroke-width": 1.6, "stroke-dasharray": "4 3"}, svg);
   const last = pts[pts.length - 1];
-  el("circle", {cx: x(last.t + HOUR), cy: y(last.f), r: 3.5, fill: C.cu}, svg);
+  el("circle", {cx: x(last.t + HOUR), cy: y(last.f), r: 3.6, fill: C.deep}, svg);
 }
 
 // ---------------------------------------------------------------- since training
@@ -400,21 +459,21 @@ function drawRecord(rec){
   const [lo, hi] = range(days.flatMap(d => [d.a, d.f]));
   const x = t => f.L + (t - t0) / (t1 - t0) * (f.W - f.L - f.R), y = v => f.T + (hi - v) / (hi - lo) * (f.H - f.T - f.B);
   if (isFinite(firstLive)){
-    el("rect", {x: f.L, y: f.T, width: Math.max(0, x(firstLive) - f.L), height: f.H - f.T - f.B, fill: C.paper}, svg);
+    el("rect", {x: f.L, y: f.T, width: Math.max(0, x(firstLive) - f.L), height: f.H - f.T - f.B, fill: C.replay}, svg);
     el("text", {x: f.L + 8, y: f.T + 16, "font-size": 11, fill: C.mid}, svg, "replayed");
-    el("text", {x: Math.min(x(firstLive) + 6, f.W - f.R - 22), y: f.T + 16, "font-size": 11, fill: C.cu}, svg, "live");
+    el("text", {x: Math.min(x(firstLive) + 6, f.W - f.R - 22), y: f.T + 16, "font-size": 11, fill: C.deep}, svg, "live");
   }
   yAxis(svg, f, lo, hi, y);
   for (let t = t0; t <= t1; t += DAY){
     const d = Number(bost(new Date(t).toISOString(), {day: "numeric"}));
     if (d === 1 || (f.W >= 600 && d === 15)){
-      el("line", {x1: x(t), x2: x(t), y1: f.H - f.B, y2: f.H - f.B + 4, stroke: C.muted}, svg);
+      el("line", {x1: x(t), x2: x(t), y1: f.H - f.B, y2: f.H - f.B + 4, stroke: C.axis}, svg);
       el("text", {x: x(t), y: f.H - 10, "text-anchor": "middle", "font-size": 11, fill: C.mid}, svg, bost(new Date(t).toISOString(), {month: "short", day: "numeric"}));
     }
   }
-  el("line", {x1: f.L, x2: f.W - f.R, y1: f.H - f.B, y2: f.H - f.B, stroke: C.muted}, svg);
-  el("path", {d: "M" + days.map(p => x(p.t).toFixed(1) + "," + y(p.a).toFixed(1)).join(" L"), fill: "none", stroke: C.ink, "stroke-width": 1.5}, svg);
-  el("path", {d: "M" + days.map(p => x(p.t).toFixed(1) + "," + y(p.f).toFixed(1)).join(" L"), fill: "none", stroke: C.cu, "stroke-width": 1.5, "stroke-dasharray": "4 3"}, svg);
+  el("line", {x1: f.L, x2: f.W - f.R, y1: f.H - f.B, y2: f.H - f.B, stroke: C.axis}, svg);
+  el("path", {d: "M" + days.map(p => x(p.t).toFixed(1) + "," + y(p.a).toFixed(1)).join(" L"), fill: "none", stroke: C.steel, "stroke-width": 1.6}, svg);
+  el("path", {d: "M" + days.map(p => x(p.t).toFixed(1) + "," + y(p.f).toFixed(1)).join(" L"), fill: "none", stroke: C.deep, "stroke-width": 1.6, "stroke-dasharray": "4 3"}, svg);
 }
 
 // ---------------------------------------------------------------- loading
