@@ -1,6 +1,6 @@
 {
- "updated_utc": "2026-11-24T22:44:05.672653+00:00",
- "error": null,
+ "updated_utc": "2026-11-24T23:33:54.176210+00:00",
+ "error": "429 Client Error: Too Many Requests for url: https://api.open-meteo.com/v1/forecast?latitude=42.3601&longitude=-71.0589&hourly=temperature_2m%2Crelative_humidity_2m%2Capparent_temperature%2Cprecipitat",
  "source": "ISO-NE",
  "input_hour_utc": "2026-11-24T21:00:00+00:00",
  "input_hour_boston": "2026-11-24T16:00:00-05:00",
