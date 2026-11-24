@@ -221,7 +221,8 @@ def predict_now():
     share, ms = B.contribution_to_commands(contrib[0], net.dead)
     return dict(src=source(), net=net, ts=ts, age_h=(B.utc_now() - ts).total_seconds() / 3600,
                 observed=float(row["demand_now"]), pred=float(pred[0]),
-                act=act[0], contrib=contrib[0], share=share, ms=ms)
+                act=act[0], contrib=contrib[0], share=share, ms=ms,
+                x=X[0], xz=net.x_scaler.transform(X)[0])
 
 
 def print_result(p):
@@ -264,6 +265,17 @@ def write_status(p=None, sent=None, error=None):
                         for i in range(B.HIDDEN)],
             "sent": sent or {"status": "not sent"},
         })
+        if "xz" in p:                               # what flowed through the network this hour, for the website
+            E = p["xz"][:, None] * net.W1           # input i -> neuron j, before the bias and ReLU
+            pre = E.sum(0) + net.b1
+            push = p["act"] * net.W2[:, 0] * net.y_std
+            st["inputs"] = [{"name": f, "value": round(float(v), 3), "z": round(float(z), 3)}
+                            for f, v, z in zip(B.FEATURES, p["x"], p["xz"])]
+            st["edges"] = np.round(E, 3).tolist()   # 15 x 25
+            st["base_mw"] = round(float(net.b2[0] * net.y_std + net.y_mean), 1)
+            for n in st["neurons"]:
+                n["pre"] = round(float(pre[n["id"]]), 4)          # z1 = x @ W1 + b1
+                n["push_mw"] = round(float(push[n["id"]]), 1)     # a1 * W2, in MW: forecast = base + sum
     elif STATUS_PATH.exists():                      # keep the last good forecast, add the error
         try:
             old = json.loads(STATUS_PATH.read_text())
