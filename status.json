@@ -1,11 +1,11 @@
 {
- "updated_utc": "2026-11-24T06:11:41.262396+00:00",
+ "updated_utc": "2026-11-24T06:23:46.244057+00:00",
  "error": null,
  "source": "ISO-NE",
  "input_hour_utc": "2026-11-24T05:00:00+00:00",
  "input_hour_boston": "2026-11-24T00:00:00-05:00",
  "forecast_hour_boston": "2026-11-24T01:00:00-05:00",
- "age_hours": 1.19,
+ "age_hours": 1.4,
  "observed_mw": 2160.7,
  "forecast_mw": 2568.6,
  "alive": 25,
