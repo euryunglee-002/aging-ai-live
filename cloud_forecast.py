@@ -122,7 +122,8 @@ def main():
         return
 
     # The next input hour t+1 is complete only at t+2. Until then there is nothing new to fetch.
-    if old.get("input_hour_utc") and not old.get("error") and \
+    complete = "edges" in old                   # older records lack the per-hour network detail
+    if complete and old.get("input_hour_utc") and not old.get("error") and \
             now < _t(old["input_hour_utc"]) + timedelta(hours=2):
         print("The next hour is not complete yet.")
         return
@@ -143,7 +144,7 @@ def main():
         print("forecast failed:", err)
         return
 
-    if old.get("input_hour_utc") == p["ts"].isoformat() and not old.get("error"):
+    if complete and old.get("input_hour_utc") == p["ts"].isoformat() and not old.get("error"):
         print("ISO-NE has not posted the next hour yet; trying again in 10 minutes.")
         return
 
