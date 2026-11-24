@@ -17,6 +17,7 @@ and Boston weather of each past hour, run through the same frozen weights
 import json
 import re
 import shutil
+import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
@@ -127,7 +128,12 @@ def main():
         return
 
     try:
-        p = R.predict_now()
+        try:
+            p = R.predict_now()
+        except Exception as first:              # ISO-NE or Open-Meteo sometimes time out; try once more
+            print("first attempt failed:", str(first)[:160])
+            time.sleep(20)
+            p = R.predict_now()
     except Exception as e:                      # keep the last good forecast, note the error
         err = re.sub(r"://[^/@\s]+@", "://", str(e))[:200]
         if old.get("error") != err:             # one commit per new error, not one per attempt

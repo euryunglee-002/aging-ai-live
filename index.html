@@ -246,7 +246,14 @@ function el(tag, attrs, parent, text){
   return e;
 }
 function setPill(cls, text){ $("pill").className = "state " + cls; $("pilltext").textContent = text; }
-function showError(e){ const b = $("err"); if (e){ b.style.display = "block"; b.textContent = "Last attempt: " + e; } else b.style.display = "none"; }
+function showError(e){
+  const b = $("err");
+  if (!e){ b.style.display = "none"; return; }
+  const who = /open-meteo/i.test(e) ? "The weather service (Open-Meteo)" : /iso-ne|isone|ISO New England/i.test(e) ? "ISO New England" : null;
+  b.textContent = who ? "Last attempt: " + who + " did not respond. The previous forecast is shown; the next attempt follows automatically."
+                      : "Last attempt failed: " + e;
+  b.style.display = "block";
+}
 const nn = i => String(i).padStart(2, "0");
 
 // ---------------------------------------------------------------- this hour
