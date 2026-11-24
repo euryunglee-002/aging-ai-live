@@ -5,246 +5,157 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google" content="notranslate">
 <title>Aging AI — live</title>
+<script>
+  // The display is one fixed 16:9 screen. Phones and portrait screens get the scrolling page instead.
+  if (innerWidth < 900 || innerHeight > innerWidth * 1.05) location.replace("page.html" + location.search);
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500&family=Tinos:ital@0;1&display=swap" rel="stylesheet">
 <style>
-  /* Colours taken from the installation photographs: black steel, the spot-lit gallery wall,
-     copper sulfate in the tubes, the ultramarine lower chamber, dark copper, the gallery floor. */
+  /* One 1920 x 1080 screen, scaled to fit any landscape display. Colours from the installation:
+     black steel, the spot-lit wall, copper sulfate, the ultramarine chamber, dark copper. */
   :root{
     --steel:#141416; --ink:#151617; --ink2:#46484b; --mid:#67696c; --muted:#8c8e91;
-    --rule:rgba(20,22,24,.18); --faint:rgba(20,22,24,.08);
+    --rule:rgba(20,22,24,.18);
     --wall-hi:#f3f4f5; --wall:#e6e7e9; --wall-lo:#b3b5b8;
-    --cuso4:#318ecc; --cuso4-text:#1d69a9; --cyan:#5fb6ea; --deep:#1f2fb8; --deposit:#13263a;
-    --room:#19191a; --floor:#2f2c27; --floor-text:#b9b4aa;
+    --cuso4:#318ecc; --cyan:#5fb6ea; --deep:#1f2fb8; --deposit:#13263a; --room:#19191a;
     --serif:"Times New Roman",Tinos,Times,serif;
     --sans:Helvetica,"Helvetica Neue",Arimo,Arial,sans-serif;
     --mono:Menlo,Consolas,"DejaVu Sans Mono",monospace;
   }
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{margin:0;color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased;
-       background:linear-gradient(90deg,var(--wall-lo) 0%,var(--wall) 20%,var(--wall-hi) 50%,var(--wall) 80%,var(--wall-lo) 100%)}
+  html,body{margin:0;height:100%;overflow:hidden;background:var(--room)}
+  body{color:var(--ink);font:18px/1.45 var(--sans);-webkit-font-smoothing:antialiased;cursor:none}
   svg text{font-family:var(--sans)}
+  #stage{position:fixed;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;
+         background:linear-gradient(90deg,var(--wall-lo) 0%,var(--wall) 18%,var(--wall-hi) 50%,var(--wall) 82%,var(--wall-lo) 100%)}
 
-  .beam{background:var(--steel);color:#d9dadc;display:flex;justify-content:space-between;align-items:center;gap:8px 18px;
-        padding:10px 28px;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;flex-wrap:wrap;position:sticky;top:0;z-index:5}
-  .beam .right{display:flex;gap:6px 18px;align-items:center;flex-wrap:wrap;letter-spacing:.04em;text-transform:none;font-size:12px;color:#9fa1a4}
-  .state{display:inline-flex;align-items:center;gap:7px;letter-spacing:.14em;text-transform:uppercase;font-size:11.5px}
-  .state .dot{width:7px;height:7px;border-radius:50%;background:currentColor}
-  .live{color:var(--cyan)} .live .dot{box-shadow:0 0 8px var(--cyan);animation:beat 2s ease-in-out infinite}
-  .delayed{color:#c9cacc} .wait,.offline{color:#8c8e91} .ended{color:#fff}
+  .top{position:absolute;left:56px;right:56px;top:30px;height:78px;display:flex;justify-content:space-between;align-items:flex-end;
+       border-bottom:1px solid rgba(20,22,24,.3);padding-bottom:16px}
+  .title{display:flex;align-items:baseline;gap:30px}
+  h1{font:400 56px/1 var(--serif);letter-spacing:-.02em;margin:0}
+  .q{font:italic 400 22px/1.2 var(--serif);color:var(--ink2);margin:0}
+  .status{text-align:right;font-size:15px;color:var(--mid);line-height:1.5}
+  .status .row1{display:flex;gap:22px;justify-content:flex-end;align-items:center}
+  .state{display:inline-flex;align-items:center;gap:9px;letter-spacing:.14em;text-transform:uppercase;font-size:15px}
+  .state .dot{width:10px;height:10px;border-radius:50%;background:currentColor}
+  .live{color:var(--deep)} .live .dot{background:var(--cuso4);box-shadow:0 0 10px var(--cyan);animation:beat 2s ease-in-out infinite}
+  .delayed{color:var(--ink2)} .wait,.offline{color:var(--muted)} .ended{color:var(--ink)}
   @keyframes beat{0%,100%{opacity:1}50%{opacity:.25}}
+  #clock{font-variant-numeric:tabular-nums;color:var(--ink)}
+  #err{color:var(--deep)}
 
-  .head{background:radial-gradient(ellipse 60% 120% at 30% 0%,#2c2d2f 0%,var(--room) 70%);color:#fff}
-  .head .in{max-width:1180px;margin:0 auto;padding:30px 48px 28px;display:grid;grid-template-columns:auto 1fr;gap:10px 44px;align-items:end}
-  h1{font:400 60px/1 var(--serif);letter-spacing:-.02em;margin:0}
-  .q{font:italic 400 19px/1.3 var(--serif);margin:0;color:#e7e9ea;max-width:520px}
-  .lede{grid-column:1 / -1;margin:4px 0 0;max-width:820px;color:#c9cbcd;font-size:14.5px}
+  .label{font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);display:flex;justify-content:space-between;gap:14px;align-items:baseline}
+  .label .r{letter-spacing:.02em;text-transform:none;color:var(--deep);font-variant-numeric:tabular-nums}
+  .label .k{letter-spacing:.02em;text-transform:none;color:var(--mid);display:inline-flex;gap:16px}
+  .label .k i{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:-1px;margin-right:6px}
 
-  .shelf{max-width:1180px;margin:0 auto;padding:0 48px}
-  .level{padding:38px 0 38px;border-bottom:1px solid rgba(20,22,24,.28)}
-  .level:last-of-type{border-bottom:0}
-  .err{margin:18px 0 0;padding:9px 12px;border-left:2px solid var(--deep);background:rgba(255,255,255,.55);font-size:13px;color:var(--ink2);display:none}
-
-  .kicker{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
-  .kicker b{font-weight:400;color:var(--muted);margin-right:14px}
-  h2{font:400 36px/1.1 var(--serif);letter-spacing:-.01em;margin:10px 0 6px}
-  .sub{color:var(--ink2);margin:0 0 16px;max-width:780px}
-  .fine{color:var(--mid);font-size:12.5px;margin:10px 0 0;max-width:780px}
-
-  /* numbers */
-  .flow{display:grid;grid-template-columns:1fr 30px 1fr 30px 1fr;align-items:start;gap:0 10px;margin:16px 0 22px}
-  .num{font:400 40px/1 var(--serif);letter-spacing:-.01em;font-variant-numeric:lining-nums}
-  .num small{font:400 15px var(--sans);color:var(--ink2);margin-left:6px;letter-spacing:0}
+  /* left: numbers and the 25 cells */
+  .left{position:absolute;left:56px;top:136px;width:760px;bottom:40px}
+  .flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;height:118px}
+  .num{font:400 56px/1 var(--serif);letter-spacing:-.01em;font-variant-numeric:lining-nums}
+  .num small{font:400 19px var(--sans);color:var(--ink2);margin-left:7px;letter-spacing:0}
   .num.deep{color:var(--deep)}
-  .cap{margin-top:6px;font-size:14px}
-  .cap2{color:var(--mid);font-size:12.5px}
-  .arrow{height:22px;margin-top:9px}
-
-  /* live: the 25 cells beside the running code */
-  .live-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:28px;align-items:start}
-  .panel-title{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2);margin:0 0 8px;display:flex;justify-content:space-between;gap:10px}
-  .panel-title span:last-child{letter-spacing:.02em;text-transform:none;color:var(--deep);font-variant-numeric:tabular-nums}
-  #body{display:block;width:100%}
+  .cap{margin-top:8px;font-size:16px}
+  .cap2{color:var(--mid);font-size:14px}
+  .cells-box{position:absolute;left:0;right:0;top:146px}
+  #body{display:block;width:760px;margin-top:12px}
+  #bodyNote{display:none}
   .rip{transform-box:fill-box;transform-origin:center}
 
-  .console{background:var(--steel);color:#d7d9db;border-radius:2px;font:12.5px/1.62 var(--mono);overflow:hidden}
-  .console .bar{display:flex;justify-content:space-between;gap:10px;padding:8px 14px;border-bottom:1px solid #2a2b2e;color:#8c8e91;font-size:11.5px}
+  /* right: the running code, and the rotating explanations */
+  .right{position:absolute;left:880px;right:56px;top:136px;bottom:40px}
+  .console{background:var(--steel);color:#d7d9db;border-radius:2px;font:15px/22px var(--mono);overflow:hidden;margin-top:10px}
+  .console .bar{display:flex;justify-content:space-between;gap:10px;padding:9px 18px;border-bottom:1px solid #2a2b2e;color:#8c8e91;font-size:14px}
   .console .bar b{font-weight:400;color:#d7d9db}
   .code{padding:8px 0}
-  .ln{display:grid;grid-template-columns:34px minmax(0,1fr);padding:0 14px 0 0;position:relative;white-space:pre}
-  .ln .no{color:#56585c;text-align:right;padding-right:12px;user-select:none}
+  .ln{display:grid;grid-template-columns:44px minmax(0,1fr);padding-right:18px;position:relative;white-space:pre}
+  .ln .no{color:#56585c;text-align:right;padding-right:14px}
   .ln .tx{overflow:hidden;text-overflow:ellipsis}
-  .ln .cm{color:#6f7276}
-  .ln .kw{color:#9ecbea}
-  .ln .val{color:var(--cyan)}
-  .ln.on{background:rgba(95,182,234,.16)}
-  .ln.on .no{color:var(--cyan)}
-  .ln.on::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--cyan)}
-  .log{border-top:1px solid #2a2b2e;padding:8px 14px 10px;height:calc(7.5em + 18px);overflow:hidden;color:#9fa1a4;font-size:11.5px;line-height:1.5}
+  .ln .cm{color:#6f7276} .ln .kw{color:#9ecbea} .ln .val{color:var(--cyan)}
+  .ln.on{background:rgba(95,182,234,.16)} .ln.on .no{color:var(--cyan)}
+  .ln.on::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--cyan)}
+  .log{border-top:1px solid #2a2b2e;padding:8px 18px 10px;height:calc(3 * 21px + 18px);overflow:hidden;color:#9fa1a4;font-size:14px;line-height:21px}
   .log div{white-space:pre;overflow:hidden;text-overflow:ellipsis}
   .log div:last-child{color:#e6e8ea}
+  #conNote{display:none}
 
-  .key{display:flex;flex-wrap:wrap;gap:4px 20px;font-size:12.5px;color:var(--ink2);margin:14px 0 6px}
-  .key span{white-space:nowrap;display:inline-flex;align-items:center;gap:7px}
-  .key .c{width:10px;height:10px;border-radius:50%;background:var(--cuso4)}
-  .key .o{width:10px;height:10px;border-radius:50%;border:1.2px solid var(--muted)}
-  .key .lp{width:20px;border-top:1.6px solid var(--cuso4)}
-  .key .ln2{width:20px;border-top:1.6px solid #9a9c9f}
-  .key .ld{width:20px;border-top:2.4px solid var(--deep)}
-
-  .photos{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px;margin-top:20px}
-  .photos figure{margin:0;overflow:hidden;background:#d0d2d4}
-  .photos img{display:block;width:100%;height:100%;object-fit:cover}
-  .photos .tall{grid-row:span 2}
-  .photos .wide{aspect-ratio:1500/1000}
-
-  .legend{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:12.5px;color:var(--ink2);margin:0 0 10px}
-  .legend span{white-space:nowrap}
-  .legend i{display:inline-block;width:20px;height:0;border-top:1.5px solid var(--ink);vertical-align:middle;margin-right:7px}
-  .legend i.f{border-top:1.5px dashed var(--deep)}
-  .legend i.r{width:14px;height:10px;border:0;background:rgba(49,142,204,.14);vertical-align:-1px}
-  .pair{display:flex;gap:56px;flex-wrap:wrap;margin:22px 0 0}
-
-  footer{background:var(--floor);color:var(--floor-text);font-size:12.5px}
-  footer .in{max-width:1180px;margin:0 auto;padding:22px 48px 30px;display:flex;justify-content:space-between;gap:10px 24px;flex-wrap:wrap}
-
-  @media (max-width:900px){
-    .live-grid{grid-template-columns:1fr}
-  }
-  @media (max-width:760px){
-    .beam{padding:9px 16px}
-    .head .in{padding:24px 18px 22px;grid-template-columns:1fr}
-    h1{font-size:46px} .q{font-size:17px}
-    .shelf{padding:0 14px}
-    .level{padding:30px 0 30px}
-    h2{font-size:28px}
-    .flow{grid-template-columns:1fr 1fr;gap:16px}
-    .flow .arrow{display:none}
-    .flow > div:last-child{grid-column:1 / -1}
-    .num{font-size:34px}
-    .console{font-size:11px}
-    .ln{grid-template-columns:26px minmax(0,1fr)}
-    .ln .tx{white-space:pre-wrap;overflow:visible}
-    .ln .cm{display:none}
-    .ln .val{display:block;padding-left:4ch}
-    .photos{grid-template-columns:1fr 1fr}
-    .photos .tall{grid-column:1 / -1;grid-row:auto;aspect-ratio:1500/1100}
-    footer .in{padding:18px 16px 26px}
-  }
+  .panels{position:absolute;left:0;right:0;bottom:0;height:292px;border-top:1px solid rgba(20,22,24,.3);padding-top:14px}
+  .panel{position:absolute;left:0;right:0;top:66px;bottom:0;opacity:0;transition:opacity .8s}
+  .panel.show{opacity:1}
+  .panel .sub{position:absolute;left:0;right:0;top:-28px;font-size:14px;color:var(--mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .panel .sub small{font-size:inherit;margin-left:3px}
+  .dots{display:inline-flex;gap:8px;align-items:center}
+  .dots i{width:7px;height:7px;border-radius:50%;background:#b4b7ba}
+  .dots i.on{background:var(--deep)}
+  .foot{position:absolute;left:56px;right:56px;bottom:14px;font-size:13px;color:var(--mid);display:flex;justify-content:space-between}
+  /* elements the shared code fills but this screen does not show */
+  .hidden{display:none}
 </style>
 </head>
 <body>
-
-<div class="beam">
-  <span>Aging AI · live · Boston</span>
-  <span class="right">
-    <span id="pill" class="state wait"><span class="dot"></span><span id="pilltext">Connecting</span></span>
-    <span id="upd"></span>
-    <span id="src"></span>
-  </span>
-</div>
-
-<header class="head">
-  <div class="in">
-    <h1>Aging AI</h1>
-    <p class="q">If artificial intelligence were visibly finite, would we still consume it as casually as we do now?</p>
-    <p class="lede" id="mode">A network forecasts Boston's electricity demand every hour. Each of its 25 neurons drives one copper
-      cell; when copper bridges a cell, that neuron is gone for good.</p>
+<div id="stage">
+  <div class="top">
+    <div class="title">
+      <h1>Aging AI</h1>
+      <p class="q">If artificial intelligence were visibly finite, would we still consume it as casually as we do now?</p>
+    </div>
+    <div class="status">
+      <div class="row1"><span id="pill" class="state wait"><span class="dot"></span><span id="pilltext">Connecting</span></span><span id="clock"></span></div>
+      <div><span id="upd"></span> <span id="src"></span> <span id="err"></span></div>
+      <div id="mode"></div>
+    </div>
   </div>
-</header>
 
-<main class="shelf">
-  <div class="err" id="err"></div>
-
-  <section class="level">
-    <div class="kicker"><b>01</b>Live</div>
+  <div class="left">
     <div class="flow">
-      <div>
-        <div class="num" id="obs">—</div>
-        <div class="cap">Demand, last full hour</div>
-        <div class="cap2" id="obsT">&nbsp;</div>
-      </div>
-      <svg class="arrow" viewBox="0 0 30 22" width="30"><line x1="0" y1="11" x2="28" y2="11" stroke="#151617"/><path d="M23 7 L28 11 L23 15" fill="none" stroke="#151617"/></svg>
-      <div>
-        <div class="num" id="act">—</div>
-        <div class="cap">neurons working</div>
-        <div class="cap2" id="actT">&nbsp;</div>
-      </div>
-      <svg class="arrow" viewBox="0 0 30 22" width="30"><line x1="0" y1="11" x2="28" y2="11" stroke="#151617"/><path d="M23 7 L28 11 L23 15" fill="none" stroke="#151617"/></svg>
-      <div>
-        <div class="num deep" id="fc">—</div>
-        <div class="cap">Forecast, the hour after</div>
-        <div class="cap2" id="fcT">&nbsp;</div>
-      </div>
+      <div><div class="num" id="obs">—</div><div class="cap">Demand, last full hour</div><div class="cap2" id="obsT">&nbsp;</div></div>
+      <div><div class="num" id="act">—</div><div class="cap">neurons working</div><div class="cap2" id="actT">&nbsp;</div></div>
+      <div><div class="num deep" id="fc">—</div><div class="cap">Forecast, the hour after</div><div class="cap2" id="fcT">&nbsp;</div></div>
     </div>
-
-    <div class="live-grid">
-      <div>
-        <div class="panel-title"><span>The 25 cells</span><span id="nowCell"></span></div>
-        <svg id="body" role="img" aria-label="the 25 cells as a 5 by 5 grid"></svg>
-        <p class="fine" id="bodyNote"></p>
-      </div>
-      <div>
-        <div class="panel-title"><span>The code, running this hour's cycle</span><span id="nowLine"></span></div>
-        <div class="console">
-          <div class="bar"><b>aging_ai · boston_rpi.cycle()</b><span id="conHead"></span></div>
-          <div class="code" id="code"></div>
-          <div class="log" id="log"></div>
-        </div>
-        <p class="fine" id="conNote"></p>
-      </div>
+    <div class="cells-box">
+      <div class="label"><span>The 25 cells</span>
+        <span class="k"><span><i style="background:var(--cuso4)"></i>this hour's pulse</span><span><i id="soFarKey" style="border:1.5px dashed var(--deposit);background:rgba(19,38,58,.28)"></i>received so far</span></span>
+        <span class="r" id="nowCell"></span></div>
+      <svg id="body" role="img" aria-label="the 25 cells"></svg>
+      <p id="bodyNote"></p>
     </div>
-  </section>
-
-  <section class="level">
-    <div class="kicker"><b>02</b>How this hour's forecast was made</div>
-    <h2>15 inputs, 25 neurons, one forecast</h2>
-    <p class="sub">Every line is a value that flowed through the network this hour. Neuron j above sits in the same column as cell N<i>j</i>.</p>
-    <div class="key">
-      <span><i class="c"></i>working neuron (size = activation)</span>
-      <span><i class="o"></i>silent neuron (activation 0)</span>
-      <span><i class="lp"></i>input pushing a neuron up</span>
-      <span><i class="ln2"></i>input pushing it down</span>
-      <span><i class="ld"></i>neuron's share of the forecast</span>
-    </div>
-    <svg id="net" width="100%" style="display:block" role="img" aria-label="the network this hour"></svg>
-    <h2 style="font-size:26px;margin-top:34px">Each working neuron becomes current in its own cell</h2>
-    <p class="sub">The same 25 cells seen from the side: a cathode hangs from above, an anode rises from below, and copper grows
-      from the cathode toward the anode. The Arduino Mega runs the cells one at a time, N00 to N24, each for its pulse time.</p>
-    <svg id="cells" width="100%" style="display:block" role="img" aria-label="the 25 cells from the side, with this hour's pulse"></svg>
-  </section>
-
-  <section class="level">
-    <div class="kicker"><b>03</b>Last 72 hours</div>
-    <h2>Demand and forecast</h2>
-    <p class="sub">Each forecast is drawn at the hour it was made for.</p>
-    <div class="legend"><span><i></i>Observed demand, NEMA zone</span><span><i class="f"></i>Forecast</span></div>
-    <svg id="chart" width="100%" style="display:block" role="img" aria-label="demand and forecast, last 72 hours"></svg>
-  </section>
-
-  <section class="level" id="recBox" style="display:none">
-    <div class="kicker"><b>04</b>Since training</div>
-    <h2 id="recTitle">Frozen</h2>
-    <p class="sub" id="recSub"></p>
-    <div class="legend"><span><i></i>Observed, daily average</span><span><i class="f"></i>Forecast, daily average</span><span><i class="r"></i>Replayed</span></div>
-    <svg id="rec" width="100%" style="display:block" role="img" aria-label="daily demand and forecast since training"></svg>
-    <div class="pair">
-      <div><div class="num" id="mFirst">—</div><div class="cap2">average miss per hour,<br>first 7 days after training</div></div>
-      <div><div class="num deep" id="mLast">—</div><div class="cap2">average miss per hour,<br>last 7 days</div></div>
-    </div>
-    <p class="fine" id="recFine"></p>
-  </section>
-
-</main>
-
-<footer>
-  <div class="in">
-    <span>Data: ISO New England, NEMA zone 4008 (five-minute estimated load, hourly means) · Open-Meteo, Boston.</span>
-    <span>Trained once on 22 September 2026, then frozen. It does not learn; it only ages.</span>
   </div>
-</footer>
+
+  <div class="right">
+    <div class="label"><span>The code, running this hour's cycle</span><span class="r" id="nowLine"></span></div>
+    <div class="console">
+      <div class="bar"><b>aging_ai · boston_rpi.cycle()</b><span id="conHead"></span></div>
+      <div class="code" id="code"></div>
+      <div class="log" id="log"></div>
+    </div>
+    <p id="conNote"></p>
+
+    <div class="panels">
+      <div class="label"><span id="panelTitle"></span><span class="dots" id="dots"></span></div>
+      <div class="panel" data-title="15 inputs → 25 neurons → forecast">
+        <div class="sub">Lines: what each input sent each working neuron this hour. Blue lines below: each neuron's share of the forecast.</div>
+        <svg id="net" data-h="214" width="984" style="display:block"></svg>
+      </div>
+      <div class="panel" data-title="The same cells, from the side">
+        <div class="sub">Cathode from above, anode from below; copper grows down from the cathode. The Mega runs the cells one at a time, N00 to N24.</div>
+        <svg id="cells" data-h="214" width="984" style="display:block"></svg>
+      </div>
+      <div class="panel" data-title="Last 72 hours · demand and forecast">
+        <div class="sub">Black: observed NEMA demand. Blue dashed: the forecast, drawn at the hour it was made for.</div>
+        <svg id="chart" data-h="214" width="984" style="display:block"></svg>
+      </div>
+      <div class="panel" id="recBox" style="display:none" data-title="Since training">
+        <div class="sub"><span id="recSub"></span> Miss per hour: <b id="mFirst" style="font-weight:400;color:var(--ink)"></b> in the first week · <b id="mLast" style="font-weight:400;color:var(--deep)"></b> in the last 7 days.</div>
+        <svg id="rec" data-h="214" width="984" style="display:block"></svg>
+        <span class="hidden" id="recTitle"></span><span class="hidden" id="recFine"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot"><span>Data: ISO New England, NEMA zone 4008 · Open-Meteo, Boston.</span><span>Trained once on 22 September 2026, then frozen. It does not learn; it only ages.</span></div>
+</div>
 
 <script>
 const N = 25, TZ = "America/New_York", HOUR = 3.6e6, DAY = 864e5;
@@ -297,8 +208,7 @@ let S = null;
 function render(s){
   S = s;
   if (s.mode === "standalone")
-    $("mode").textContent = "A network forecasts Boston's electricity demand every hour. Each of its 25 neurons drives one copper cell; " +
-      "when copper bridges a cell, that neuron is gone for good. Right now no copper is attached: the network runs in the cloud and nothing is sent to the cells.";
+    $("mode").textContent = "No copper attached: the network runs in the cloud; nothing is sent to the cells.";
   if (!s.has_forecast){
     setPill(s.error ? "delayed" : "wait", s.error ? "Error" : "Waiting");
     $("src").textContent = "waiting for the first forecast";
@@ -375,8 +285,8 @@ function drawCells(s){
   const svg = $("cells"); svg.innerHTML = "";
   const W = Math.max(300, Math.round(svg.parentNode.clientWidth || 980)), small = W < 600;
   const L = 2, R = 2, cw = (W - L - R) / N, x = i => L + (i + .5) * cw;
-  const top = 30, stemH = small ? 70 : 96, base = top + stemH;
-  const tubeTop = base + 28, tubeH = small ? 118 : 146, H = tubeTop + tubeH + 40;
+  const cpt = !!svg.dataset.h, top = cpt ? 24 : 30, stemH = cpt ? 50 : small ? 70 : 96, base = top + stemH;
+  const tubeTop = base + 28, tubeH = cpt ? 78 : small ? 118 : 146, H = tubeTop + tubeH + (cpt ? 32 : 40);
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
   const defs = el("defs", {}, svg);
   const mk = (id, a, b) => { const g = el("linearGradient", {id, x1: 0, y1: 0, x2: 0, y2: 1}, defs);
@@ -455,7 +365,7 @@ drawCode();
 function logLine(t){
   const box = $("log"), d = document.createElement("div");
   d.textContent = t; box.appendChild(d);
-  while (box.children.length > 5) box.removeChild(box.firstChild);
+  while (box.children.length > 3) box.removeChild(box.firstChild);
 }
 
 let cyc = {timer: null, key: ""};
@@ -552,7 +462,8 @@ function drawNet(s){
   const svg = $("net"); svg.innerHTML = "";
   const W = Math.max(300, Math.round(svg.parentNode.clientWidth || 980)), small = W < 640;
   const L = 2, cw = (W - 4) / N, x = j => L + (j + .5) * cw;
-  const yIn = small ? 34 : 70, yH = yIn + (small ? 150 : 210), yOut = yH + (small ? 96 : 120), H = yOut + (small ? 58 : 50);
+  const cpt = !!svg.dataset.h;
+  const yIn = cpt ? 52 : small ? 34 : 70, yH = yIn + (cpt ? 92 : small ? 150 : 210), yOut = yH + (cpt ? 48 : small ? 96 : 120), H = yOut + (cpt ? 22 : small ? 58 : 50);
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
   const ns = s.neurons || [], dead = new Set(s.dead || []);
   const act = ns.map(n => dead.has(n.id) ? 0 : n.activation || 0);
@@ -600,13 +511,13 @@ function drawNet(s){
     else if (act[j] > 0) el("circle", {cx: x(j), cy: yH, r: (small ? 2.5 : 3.5) + (small ? 4 : 6) * Math.sqrt(act[j] / maxA), fill: C.cuso4}, svg);
     else el("circle", {cx: x(j), cy: yH, r: small ? 3 : 4, fill: "none", stroke: C.muted, "stroke-width": 1.1}, svg);
     el("circle", {cx: x(j), cy: yH, r: small ? 11 : 14, fill: "none", stroke: C.deep, "stroke-width": 2, opacity: 0, id: "ring" + j}, svg);
-    if (!small && (j % 5 === 0 || j === 24)) el("text", {x: x(j), y: yH + 30, "text-anchor": "middle", "font-size": 10.5, fill: C.mid}, svg, "N" + nn(j));
+    if (!small && !cpt && (j % 5 === 0 || j === 24)) el("text", {x: x(j), y: yH + 30, "text-anchor": "middle", "font-size": 10.5, fill: C.mid}, svg, "N" + nn(j));
   }
   el("circle", {cx: ox, cy: yOut, r: small ? 6 : 8, fill: C.deep}, svg);
   el("text", {x: ox + 16, y: yOut + 6, "font-size": small ? 19 : 22, fill: C.deep, "font-family": "Times New Roman, Tinos, Times, serif"}, svg, fmtMW(s.forecast_mw) + " MW");
   if (s.base_mw != null){
     const sum = s.forecast_mw - s.base_mw, sign = sum >= 0 ? "+" : "−";
-    el("text", {x: ox, y: yOut + (small ? 30 : 32), "text-anchor": "middle", "font-size": small ? 10.5 : 12, fill: C.mid}, svg,
+    el("text", {x: cpt ? ox + 150 : ox, y: cpt ? yOut + 6 : yOut + (small ? 30 : 32), "text-anchor": cpt ? "start" : "middle", "font-size": cpt ? 14 : small ? 10.5 : 12, fill: C.mid}, svg,
        fmtMW(s.base_mw) + " (bias)  " + sign + "  " + fmtMW(Math.abs(sum)) + " (" + act.filter(a => a > 0).length + " working neurons)  =  " + fmtMW(s.forecast_mw) + " MW");
   }
 }
@@ -614,7 +525,7 @@ function drawNet(s){
 // ---------------------------------------------------------------- charts
 function frame(svg){
   svg.innerHTML = "";
-  const W = Math.max(300, Math.round(svg.parentNode.clientWidth || 980)), H = W < 600 ? 230 : 280;
+  const W = Math.max(300, Math.round(svg.parentNode.clientWidth || 980)), H = svg.dataset.h ? +svg.dataset.h : W < 600 ? 230 : 280;
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
   return {W, H, L: 46, R: 6, T: 14, B: 32};
 }
@@ -678,7 +589,7 @@ function drawRecord(rec){
   $("recBox").style.display = "block";
   const trained = Date.parse(rec.trained_utc);
   $("recTitle").textContent = "Frozen for " + Math.floor((Date.now() - trained) / DAY) + " days";
-  $("recSub").textContent = "The weights were saved on " + longDay(trained) + " and have not changed since. One point per day, Boston time.";
+  $("recSub").textContent = "Daily averages. Shaded: replayed with the same weights before the site went live.";
   const mae = ps => ps.length ? Math.round(ps.reduce((s, p) => s + Math.abs(p.f - p.a), 0) / ps.length) : null;
   const tEnd = pairs[pairs.length - 1].t;
   $("mFirst").innerHTML = fmtMW(mae(pairs.filter(p => p.t < trained + 7 * DAY))) + "<small>MW</small>";
@@ -732,6 +643,63 @@ window.addEventListener("resize", () => { clearTimeout(rsz); rsz = setTimeout(()
   if (S){ cyc.key = ""; render(S); }
   if (lastRecord) drawRecord(lastRecord);
 }, 150); });
+
+// ================================================================ display screen
+// the 25 cells, sized for a screen seen from a couple of metres
+function drawBody(s){
+  const svg = $("body"); svg.innerHTML = "";
+  const W = 760, cell = W / 5, R = 50, rowH = 143, H = rowH * 5;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.setAttribute("height", H);
+  const dead = new Set(s.dead || []), ns = s.neurons || [];
+  const {real, tot} = cellTotals(s);
+  const key = $("soFarKey");
+  if (key){ key.style.background = real ? C.deposit : "rgba(19,38,58,.28)"; key.style.borderStyle = real ? "solid" : "dashed"; }
+  for (let i = 0; i < N; i++){
+    const cx = (i % 5 + .5) * cell, cy = Math.floor(i / 5) * rowH + R + 4;
+    const isDead = dead.has(i), ms = isDead ? 0 : (ns[i] || {}).pulse_ms || 0;
+    const g = el("g", {}, svg);
+    el("circle", {cx, cy, r: R, fill: isDead ? C.deposit : "rgba(255,255,255,.45)", stroke: isDead ? C.deposit : "#b4b7ba", "stroke-width": 1.2, id: "frame" + i}, g);
+    if (!isDead){
+      el("circle", {cx, cy, r: (R * Math.sqrt(ms / 1500)).toFixed(2), fill: C.cuso4, "fill-opacity": .85, class: "rip", id: "hr" + i}, g);
+      el("circle", {cx, cy, r: (R * Math.sqrt(Math.min(1, (tot[i] || 0) / FULL_GAP_MS))).toFixed(2), class: "rip", id: "cu" + i,
+                    fill: real ? C.deposit : "rgba(19,38,58,.28)", stroke: real ? "none" : C.deposit, "stroke-width": 1.2, "stroke-dasharray": real ? "" : "3 3"}, g);
+      el("circle", {cx, cy, r: R, fill: "none", stroke: C.deep, "stroke-width": 2, opacity: 0, class: "rip", id: "rip" + i}, g);
+    }
+    el("text", {x: cx - 6, y: cy + R + 26, "text-anchor": "end", "font-size": 16, fill: isDead ? C.muted : C.ink,
+                "font-family": "Menlo, Consolas, monospace", "text-decoration": isDead ? "line-through" : "none"}, g, "N" + nn(i));
+    el("text", {x: cx + 6, y: cy + R + 26, "text-anchor": "start", "font-size": 16, fill: ms > 0 ? C.deep : C.muted}, g,
+       isDead ? "dead" : ms > 0 ? ms + " ms" : "0");
+  }
+}
+function showError(e){
+  if (!e){ $("err").textContent = ""; return; }
+  $("err").textContent = /open-meteo/i.test(e) ? "· the weather service did not respond; retrying"
+                       : /iso-ne|isone|ISO New England/i.test(e) ? "· ISO New England did not respond; retrying" : "· last attempt failed";
+}
+// fit the 1920 x 1080 screen to the window
+function fit(){
+  const k = Math.min(innerWidth / 1920, innerHeight / 1080), st = $("stage");
+  st.style.transform = `translate(${(innerWidth - 1920 * k) / 2}px, ${(innerHeight - 1080 * k) / 2}px) scale(${k})`;
+}
+addEventListener("resize", fit); fit();
+// Boston clock
+setInterval(() => { $("clock").textContent = "Boston " + bost(new Date().toISOString(), {hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23"}); }, 1000);
+// the explanations below the code take turns
+let panelIdx = -1;
+function rotate(){
+  const ps = [...document.querySelectorAll(".panel")].filter(p => p.style.display !== "none");
+  if (!ps.length) return;
+  panelIdx = (panelIdx + 1) % ps.length;
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("show"));
+  ps[panelIdx].classList.add("show");
+  let t = ps[panelIdx].dataset.title;
+  if (ps[panelIdx].id === "recBox") t = $("recTitle").textContent || t;
+  $("panelTitle").textContent = t;
+  $("dots").innerHTML = ps.map((p, i) => `<i class="${i === panelIdx ? "on" : ""}"></i>`).join("");
+}
+setTimeout(rotate, 400);
+setInterval(rotate, 15000);
+
 tick(); loadRecord();
 setInterval(tick, 60000);
 setInterval(loadRecord, 600000);
