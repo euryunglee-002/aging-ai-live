@@ -1,6 +1,6 @@
 {
- "updated_utc": "2026-11-27T12:34:56.148174+00:00",
- "error": null,
+ "updated_utc": "2026-11-27T13:57:33.870917+00:00",
+ "error": "HTTPSConnectionPool(host='api.open-meteo.com', port=443): Read timed out. (read timeout=60)",
  "source": "ISO-NE",
  "input_hour_utc": "2026-11-27T11:00:00+00:00",
  "input_hour_boston": "2026-11-27T06:00:00-05:00",
